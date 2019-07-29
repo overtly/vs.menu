@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LocalData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <ThriftFileName>Sodao.Urljump.thrift</ThriftFileName>
+    <ServiceName>UrljumpService</ServiceName>
+    <ConfigServiceName>UrljumpService</ConfigServiceName>
+    <NugetId />
+    <Port>123456</Port>
+    <Publish>false</Publish>
+</LocalData>

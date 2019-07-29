@@ -1,0 +1,85 @@
+﻿<Window x:Class="VS.Menu.ServiceDependence"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="服务依赖管理" Height="320" Width="380" Name="mainWindow"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded">
+    <Grid>
+        <TextBox Height="23" Margin="82,18,10,0" Name="tbPackageId" VerticalAlignment="Top" TabIndex="1" ToolTip="" Text="" />
+        <Label Name="lbPackageId" Margin="10,15,247,214">包名：</Label>
+
+        <Label Name="lbVersion" Margin="10,48,0,0" Width="67" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27">版本号：</Label>
+        <TextBox Height="23" Margin="82,51,10,0" Name="tbVersion" VerticalAlignment="Top" TabIndex="3" Text="" />
+
+        <Label Name="lbNamespace" Margin="10,82,0,0" Width="72" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27">命名空间：</Label>
+        <TextBox Height="23" Margin="82,85,10,0" Name="tbNamespace" VerticalAlignment="Top" TabIndex="3" Text="" />
+
+        <Button Height="30" HorizontalAlignment="Left" Margin="82,123,0,0" Cursor="Hand" Name="btnSure" TabIndex="5" VerticalAlignment="Top" Width="75" Click="btnSure_Click" Content="添加">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="btnSureBorder" BorderBrush="#999999" BorderThickness="1" CornerRadius="3" Background="#eee" Opacity="0.7">
+                        <ContentPresenter x:Name="btnSureContent" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Grid Background="#FFFFFF"  Margin="0,170,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="104*"/>
+                <ColumnDefinition Width="83*"/>
+                <ColumnDefinition Width="0*"/>
+                <ColumnDefinition Width="0*"/>
+            </Grid.ColumnDefinitions>
+            <ListView x:Name="lvDependencies" Height="112" VerticalAlignment="Bottom" Grid.ColumnSpan="2">
+                <ListView.ContextMenu>
+                    <ContextMenu Name="ZoneIformationList" StaysOpen="true" Background="WhiteSmoke">
+                        <ContextMenu.BitmapEffect>
+                            <BitmapEffectGroup/>
+                        </ContextMenu.BitmapEffect>
+                        <MenuItem Header="删除" Name="cmiDelete" Click="cmiDelete_OnClick" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="包名" Width="120">
+                            <GridViewColumn.HeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+                                </Style>
+                            </GridViewColumn.HeaderContainerStyle>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding PackageId}" TextAlignment="Left" Width="200"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="版本号" Width="80">
+                            <GridViewColumn.HeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+                                </Style>
+                            </GridViewColumn.HeaderContainerStyle>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Version}" TextAlignment="Left" Width="100"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="命名空间" Width="150">
+                            <GridViewColumn.HeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+                                </Style>
+                            </GridViewColumn.HeaderContainerStyle>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Namespace}" TextAlignment="Left" Width="100"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </Grid>
+</Window>

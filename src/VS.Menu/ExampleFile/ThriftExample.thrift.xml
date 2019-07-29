@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LocalData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <ThriftFileName>ThriftExample.thrift</ThriftFileName>
+    <ServiceName>sdfService</ServiceName>
+    <ConfigServiceName>sdf</ConfigServiceName>
+    <NugetId>sdf</NugetId>
+    <Port>111</Port>
+    <Publish>false</Publish>
+</LocalData>

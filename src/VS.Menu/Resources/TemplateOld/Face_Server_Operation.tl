@@ -1,0 +1,1 @@
+﻿            void <%=methodName%>(<%=params%>Action<%=returnType%> callback);

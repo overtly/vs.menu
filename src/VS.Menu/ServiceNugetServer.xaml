@@ -1,0 +1,24 @@
+﻿<Window x:Class="VS.Menu.ServiceNugetServer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Nuget服务器设置" Height="173.554" Width="380" Name="mainWindow"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded">
+    <Grid>
+        <Label Name="lbAddress" Margin="10,19,0,0" Width="67" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27">地址：</Label>
+        <TextBox Height="23" Margin="82,22,10,0" Name="tbAddress" VerticalAlignment="Top" TabIndex="3" Text="" />
+
+        <Label Name="lbKey" Margin="10,53,0,0" Width="72" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27">密钥：</Label>
+        <TextBox Height="23" Margin="82,56,10,0" Name="tbKey" VerticalAlignment="Top" TabIndex="3" Text="" />
+
+        <Button Height="30" HorizontalAlignment="Left" Margin="82,94,0,0" Cursor="Hand" Name="btnSure" TabIndex="5" VerticalAlignment="Top" Width="75" Click="btnSure_Click" Content="确定">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="btnSureBorder" BorderBrush="#999999" BorderThickness="1" CornerRadius="3" Background="#eee" Opacity="0.7">
+                        <ContentPresenter x:Name="btnSureContent" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</Window>
