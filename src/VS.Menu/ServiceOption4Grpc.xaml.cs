@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EnvDTE;
+using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,10 +13,10 @@ namespace VS.Menu
     /// <summary>
     /// ServiceOption.xaml 的交互逻辑
     /// </summary>
-    public partial class ServiceOption4Grpc : Window
+    public partial class ServiceOption4Grpc : System.Windows.Window
     {
-        private EnvDTE.DTE _dte;
-        public ServiceOption4Grpc(EnvDTE.DTE dte)
+        private DTE _dte;
+        public ServiceOption4Grpc(DTE dte)
         {
             _dte = dte;
 

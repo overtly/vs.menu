@@ -108,6 +108,5 @@ namespace VS.Menu.Helper
 
             XmlHelper.XmlSerializeToFile(data, filePath);
         }
-
     }
 }

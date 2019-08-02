@@ -18,11 +18,11 @@ namespace VS.Menu.GrpcGenCore
         public GrpcGenerator()
         {
             #region 创建临时目录
-            var templateDic = System.IO.Path.Combine(System.IO.Path.GetTempPath(), Utility.TmpFoldName);
-            if (!System.IO.Directory.Exists(templateDic))
+            var templateDic = Path.Combine(Path.GetTempPath(), Utility.TmpFoldName);
+            if (!Directory.Exists(templateDic))
             {
-                try { System.IO.Directory.CreateDirectory(templateDic); }
-                catch (Exception ex) { }
+                try { Directory.CreateDirectory(templateDic); }
+                catch { }
                 return;
             }
             #endregion

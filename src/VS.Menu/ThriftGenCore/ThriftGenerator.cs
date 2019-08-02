@@ -39,7 +39,7 @@ namespace VS.Menu.ThriftGenCore
             if (!System.IO.Directory.Exists(templateDic))
             {
                 try { System.IO.Directory.CreateDirectory(templateDic); }
-                catch (Exception ex) { }
+                catch { }
                 return;
             }
             #endregion

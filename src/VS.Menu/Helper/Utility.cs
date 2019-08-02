@@ -66,7 +66,7 @@ namespace VS.Menu.Helper
             if (!System.IO.Directory.Exists(AppBaseDic))
             {
                 try { System.IO.Directory.CreateDirectory(AppBaseDic); }
-                catch (Exception ex) { }
+                catch { }
             }
             #endregion
         }
@@ -218,7 +218,7 @@ namespace VS.Menu.Helper
                     bWriter = new BinaryWriter(fileStream);//以二进制打开文件流
                     bWriter.Write(buffer, 0, buffer.Length);//从资源文件读取文件内容，写入到一个文件中
                 }
-                catch (Exception ex) { }
+                catch { }
                 finally
                 {
                     if (bWriter != null)

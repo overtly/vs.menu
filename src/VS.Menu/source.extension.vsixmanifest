@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="9e7ff0e2-ba79-49aa-8ab5-4a22c6213f5c" Version="1.6.5.1" Language="en-US" Publisher="yaofeng" />
+        <Identity Id="9e7ff0e2-ba79-49aa-8ab5-4a22c6213f5c" Version="1.6.5.2" Language="en-US" Publisher="yaofeng" />
         <DisplayName>VS RPC Menu</DisplayName>
         <Description xml:space="preserve">RPC (Thrift / Grpc) server-side code and client-side driver generation tools</Description>
         <MoreInfo>http://inmetavsgallery.codeplex.com/</MoreInfo>
