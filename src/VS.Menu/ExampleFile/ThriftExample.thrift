@@ -1,4 +1,4 @@
-namespace csharp Sodao.Urljump.Service.Thrift
+namespace csharp Overt.Urljump.Service.Thrift
 
 /**
 * User∂‘œÛ

@@ -211,9 +211,9 @@ namespace VS.Menu.ThriftGenCore
                 thriftProxyBuilder.Append(Environment.NewLine);
                 thriftProxyBuilder.Append("    <version>1.0." + DateTime.Now.ToString("yyyyMMddHH") + "</version>");
                 thriftProxyBuilder.Append(Environment.NewLine);
-                thriftProxyBuilder.Append("    <authors>Sodao</authors>");
+                thriftProxyBuilder.Append("    <authors>Overt</authors>");
                 thriftProxyBuilder.Append(Environment.NewLine);
-                thriftProxyBuilder.Append("    <owners>Sodao</owners>");
+                thriftProxyBuilder.Append("    <owners>Overt</owners>");
                 thriftProxyBuilder.Append(Environment.NewLine);
                 thriftProxyBuilder.Append("    <requireLicenseAcceptance>false</requireLicenseAcceptance>");
                 thriftProxyBuilder.Append(Environment.NewLine);

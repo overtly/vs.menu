@@ -102,10 +102,10 @@ namespace VS.Menu.ThriftGenCore
                 errorMsg = "Namespace not exist";
                 return false;
             }
-            var namespaceRegex = new Regex(@"^Sodao\.(([A-Z][a-zA-Z]{1,}\.)+)Thrift$");
+            var namespaceRegex = new Regex(@"^(([A-Z][a-zA-Z]{1,}\.)+)Thrift$");
             if (!namespaceRegex.IsMatch(csNamespace))
             {
-                errorMsg = "Namespace not match [Sodao.Xyyyy.Thrift]";
+                errorMsg = "Namespace not match [Xyyyy.Thrift]";
                 var showMsg = MessageBox.Show(errorMsg + "!!! 是否继续?", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (showMsg == MessageBoxResult.No)
                 {

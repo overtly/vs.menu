@@ -73,21 +73,21 @@
           }
         }
       },
-      "Sodao.Core.Grpc/1.0.6": {
+      "Overt.Core.Grpc/1.0.0": {
         "type": "package",
         "dependencies": {
-          "Consul": "0.7.2.4",
-          "Google.Protobuf": "3.5.1",
-          "Grpc": "1.10.0"
+          "Consul": "0.7.2.6",
+          "Google.Protobuf": "3.8.0",
+          "Grpc": "1.21.0"
         },
         "frameworkAssemblies": [
           "System.Configuration"
         ],
         "compile": {
-          "lib/net45/Sodao.Core.Grpc.dll": {}
+          "lib/net45/Overt.Core.Grpc.dll": {}
         },
         "runtime": {
-          "lib/net45/Sodao.Core.Grpc.dll": {}
+          "lib/net45/Overt.Core.Grpc.dll": {}
         }
       },
       "System.Interactive.Async/3.1.1": {
@@ -172,21 +172,21 @@
           }
         }
       },
-      "Sodao.Core.Grpc/1.0.6": {
+      "Overt.Core.Grpc/1.0.0": {
         "type": "package",
         "dependencies": {
-          "Consul": "0.7.2.4",
-          "Google.Protobuf": "3.5.1",
-          "Grpc": "1.10.0"
+          "Consul": "0.7.2.6",
+          "Google.Protobuf": "3.8.0",
+          "Grpc": "1.21.0"
         },
         "frameworkAssemblies": [
           "System.Configuration"
         ],
         "compile": {
-          "lib/net46/Sodao.Core.Grpc.dll": {}
+          "lib/net46/Overt.Core.Grpc.dll": {}
         },
         "runtime": {
-          "lib/net46/Sodao.Core.Grpc.dll": {}
+          "lib/net46/Overt.Core.Grpc.dll": {}
         }
       },
       "System.Interactive.Async/3.1.1": {
@@ -687,20 +687,20 @@
           }
         }
       },
-      "Sodao.Core.Grpc/1.0.6": {
+      "Overt.Core.Grpc/1.0.0": {
         "type": "package",
         "dependencies": {
-          "Consul": "0.7.2.4",
-          "Google.Protobuf": "3.5.1",
-          "Grpc": "1.10.0",
+          "Consul": "0.7.2.6",
+          "Google.Protobuf": "3.8.0",
+          "Grpc": "1.21.0",
           "Microsoft.Extensions.Configuration.Json": "2.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "2.0.0"
         },
         "compile": {
-          "lib/netstandard2.0/Sodao.Core.Grpc.dll": {}
+          "lib/netstandard2.0/Overt.Core.Grpc.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.0/Sodao.Core.Grpc.dll": {}
+          "lib/netstandard2.0/Overt.Core.Grpc.dll": {}
         }
       },
       "System.Collections/4.3.0": {
@@ -2413,17 +2413,17 @@
         "runtimes/ubuntu.16.10-x64/native/System.Security.Cryptography.Native.OpenSsl.so"
       ]
     },
-    "Sodao.Core.Grpc/1.0.6": {
+    "Overt.Core.Grpc/1.0.0": {
       "sha512": "fZdZMN5KtxTz8ixjfmICZa5lASD+SHcmt6FgqsXQuvmatTvLmojrNamslGiSO9CPYNmZpW+F+k6sFwNOLwfGTg==",
       "type": "package",
-      "path": "sodao.core.grpc/1.0.6",
+      "path": "overt.core.grpc/1.0.0",
       "files": [
-        "lib/net45/Sodao.Core.Grpc.dll",
-        "lib/net46/Sodao.Core.Grpc.dll",
-        "lib/net47/Sodao.Core.Grpc.dll",
-        "lib/netstandard2.0/Sodao.Core.Grpc.dll",
-        "sodao.core.grpc.1.0.6.nupkg.sha512",
-        "sodao.core.grpc.nuspec"
+        "lib/net45/Overt.Core.Grpc.dll",
+        "lib/net46/Overt.Core.Grpc.dll",
+        "lib/net47/Overt.Core.Grpc.dll",
+        "lib/netstandard2.0/Overt.Core.Grpc.dll",
+        "overt.core.grpc.1.0.0.nupkg.sha512",
+        "overt.core.grpc.nuspec"
       ]
     },
     "System.Collections/4.3.0": {
@@ -5491,14 +5491,14 @@
   },
   "projectFileDependencyGroups": {
     ".NETFramework,Version=v4.5": [
-      "Sodao.Core.Grpc >= 1.0.6"
+      "Overt.Core.Grpc >= 1.0.0"
     ],
     ".NETFramework,Version=v4.6": [
-      "Sodao.Core.Grpc >= 1.0.6"
+      "Overt.Core.Grpc >= 1.0.0"
     ],
     ".NETStandard,Version=v2.0": [
       "NETStandard.Library >= 2.0.1",
-      "Sodao.Core.Grpc >= 1.0.6"
+      "Overt.Core.Grpc >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -5553,17 +5553,17 @@
     "frameworks": {
       "net45": {
         "dependencies": {
-          "Sodao.Core.Grpc": {
+          "Overt.Core.Grpc": {
             "target": "Package",
-            "version": "[1.0.6, )"
+            "version": "[1.0.0, )"
           }
         }
       },
       "net46": {
         "dependencies": {
-          "Sodao.Core.Grpc": {
+          "Overt.Core.Grpc": {
             "target": "Package",
-            "version": "[1.0.6, )"
+            "version": "[1.0.0, )"
           }
         }
       },
@@ -5575,9 +5575,9 @@
             "version": "[2.0.1, )",
             "autoReferenced": true
           },
-          "Sodao.Core.Grpc": {
+          "Overt.Core.Grpc": {
             "target": "Package",
-            "version": "[1.0.6, )"
+            "version": "[1.0.0, )"
           }
         },
         "imports": [

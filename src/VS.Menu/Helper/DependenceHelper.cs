@@ -52,7 +52,7 @@ namespace VS.Menu.Helper
                 {
                     data = new List<DependenceModel>()
                     {
-                        new DependenceModel(){ PackageId = "Sodao.Core.Grpc", Version= "1.0.10.1", Namespace = "Sodao.Core.Grpc" },
+                        new DependenceModel(){ PackageId = "Overt.Core.Grpc", Version= "1.0.0", Namespace = "Overt.Core.Grpc" },
                     };
                 }
                 Save(data, type);
@@ -82,7 +82,7 @@ namespace VS.Menu.Helper
             var type = "grpc";
             var dependencies = Get(type);
             return dependencies.FirstOrDefault(oo => oo.PackageId.ToLower().Contains("grpc"))?.Namespace ??
-                "Sodao.Core.Grpc";
+                "Overt.Core.Grpc";
         }
 
         /// <summary>
@@ -100,12 +100,14 @@ namespace VS.Menu.Helper
                 Directory.CreateDirectory(fold);
 
             var filePath = Path.Combine(fold, type + ".data");
-            if (!File.Exists(filePath))
+            if (File.Exists(filePath))
             {
-                File.Create(filePath);
-                Thread.Sleep(20);
+                var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                if (!VersionHelper.Compare(version))
+                {
+                    File.Delete(filePath);
+                }
             }
-
             XmlHelper.XmlSerializeToFile(data, filePath);
         }
     }
