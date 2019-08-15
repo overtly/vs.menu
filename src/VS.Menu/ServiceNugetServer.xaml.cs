@@ -14,7 +14,6 @@ namespace VS.Menu
             InitializeComponent();
         }
 
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var data = NugetServerHelper.Get();
@@ -39,8 +38,7 @@ namespace VS.Menu
                 Key = key
             };
             NugetServerHelper.Save(data);
-
-            this.Close();
+            Close();
         }
     }
 }

@@ -179,6 +179,14 @@ namespace VS.Menu
             ShowNugetServerDialog();
         }
 
+        private void CbPublish_Checked(object sender, RoutedEventArgs e)
+        {
+            var nuget = NugetServerHelper.Get();
+            if (string.IsNullOrEmpty(nuget?.Address))
+            {
+                ShowNugetServerDialog();
+            }
+        }
 
         // 自定义方法
         private void ShowDependenceDialog()
@@ -195,6 +203,12 @@ namespace VS.Menu
             var window = new ServiceNugetServer()
             {
                 Owner = this
+            };
+            window.Closed += (sender, e) =>
+            {
+                var nuget = NugetServerHelper.Get();
+                if (string.IsNullOrEmpty(nuget?.Address))
+                    cbPublish.IsChecked = false;
             };
             window.ShowDialog();
         }

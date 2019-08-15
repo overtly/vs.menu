@@ -5,10 +5,10 @@
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid>
         <Label Name="lbAddress" Margin="10,19,0,0" Width="67" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27">地址：</Label>
-        <TextBox Height="23" Margin="82,22,10,0" Name="tbAddress" VerticalAlignment="Top" TabIndex="3" Text="" />
+        <TextBox Height="23" Margin="82,22,10,0" Name="tbAddress" VerticalAlignment="Top" VerticalContentAlignment="Center" TabIndex="3" Text="" />
 
         <Label Name="lbKey" Margin="10,53,0,0" Width="72" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27">密钥：</Label>
-        <TextBox Height="23" Margin="82,56,10,0" Name="tbKey" VerticalAlignment="Top" TabIndex="3" Text="" />
+        <TextBox Height="23" Margin="82,56,10,0" Name="tbKey" VerticalAlignment="Top" VerticalContentAlignment="Center" TabIndex="3" Text="" />
 
         <Button Height="30" HorizontalAlignment="Left" Margin="82,94,0,0" Cursor="Hand" Name="btnSure" TabIndex="5" VerticalAlignment="Top" Width="75" Click="btnSure_Click" Content="确定">
             <Button.Template>

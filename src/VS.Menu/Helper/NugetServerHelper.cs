@@ -19,11 +19,9 @@ namespace VS.Menu.Helper
         {
             var data = new NugetServerModel();
             var fileName = "setting.data";
-            var address = "http://10.0.60.89:8081";
             if (ThriftGlobal.GenAsyncVersion == EnumGenAsyncVersion.Old)
             {
                 fileName = $"setting_{ThriftGlobal.GenAsyncVersion}.data";
-                address = "http://10.0.60.89:8080";
             }
 
             var filePath = Path.Combine(Utility.AppBaseDic, "nuget", fileName);
@@ -36,17 +34,6 @@ namespace VS.Menu.Helper
                     data = XmlHelper.XmlDeserializeFromFile<NugetServerModel>(filePath) ?? new NugetServerModel();
             }
             catch (Exception) { }
-
-            if (string.IsNullOrEmpty(data?.Address))
-            {
-                data = new NugetServerModel()
-                {
-                    Address = address,
-                    Key = "123456"
-                };
-                Save(data);
-            }
-
             return data;
         }
 
@@ -69,10 +56,13 @@ namespace VS.Menu.Helper
                 fileName = $"setting_{ThriftGlobal.GenAsyncVersion}.data";
 
             var filePath = Path.Combine(fold, fileName);
-            if (!File.Exists(filePath))
+            if (File.Exists(filePath))
             {
-                File.Create(filePath);
-                Thread.Sleep(20);
+                var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                if (!VersionHelper.Compare(version))
+                {
+                    File.Delete(filePath);
+                }
             }
 
             XmlHelper.XmlSerializeToFile(data, filePath);

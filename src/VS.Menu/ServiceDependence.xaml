@@ -4,14 +4,14 @@
         Title="服务依赖管理" Height="320" Width="380" Name="mainWindow"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid>
-        <TextBox Height="23" Margin="82,18,10,0" Name="tbPackageId" VerticalAlignment="Top" TabIndex="1" ToolTip="" Text="" />
+        <TextBox Height="23" Margin="82,18,10,0" Name="tbPackageId" VerticalAlignment="Top" VerticalContentAlignment="Center" TabIndex="1" ToolTip="" Text="" />
         <Label Name="lbPackageId" Margin="10,15,247,214">包名：</Label>
 
         <Label Name="lbVersion" Margin="10,48,0,0" Width="67" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27">版本号：</Label>
-        <TextBox Height="23" Margin="82,51,10,0" Name="tbVersion" VerticalAlignment="Top" TabIndex="3" Text="" />
+        <TextBox Height="23" Margin="82,51,10,0" Name="tbVersion" VerticalAlignment="Top" VerticalContentAlignment="Center" TabIndex="3" Text="" />
 
         <Label Name="lbNamespace" Margin="10,82,0,0" Width="72" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27">命名空间：</Label>
-        <TextBox Height="23" Margin="82,85,10,0" Name="tbNamespace" VerticalAlignment="Top" TabIndex="3" Text="" />
+        <TextBox Height="23" Margin="82,85,10,0" Name="tbNamespace" VerticalAlignment="Top" VerticalContentAlignment="Center" TabIndex="3" Text="" />
 
         <Button Height="30" HorizontalAlignment="Left" Margin="82,123,0,0" Cursor="Hand" Name="btnSure" TabIndex="5" VerticalAlignment="Top" Width="75" Click="btnSure_Click" Content="添加">
             <Button.Template>
