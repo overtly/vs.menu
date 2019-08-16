@@ -78,6 +78,9 @@ namespace VS.Menu.GrpcGenCore
                     case EnumGrpcGenType.Origin:
                         result = GenExecutor.Execute(sorceFile, EnumGrpcGenType.Origin, tempKey, out csNamespace, out errorMsg, out resultDic);
                         break;
+                    case EnumGrpcGenType.Client:
+                        result = GenExecutor.Execute(sorceFile, EnumGrpcGenType.Client, tempKey, out csNamespace, out errorMsg, out resultDic);
+                        break;
                     case EnumGrpcGenType.GenDll:
                         result = GenExecutor.ExecuteDll(sorceFile, tempKey, out csNamespace, out errorMsg, out resultDic);
                         break;

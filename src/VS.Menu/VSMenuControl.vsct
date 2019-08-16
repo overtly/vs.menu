@@ -81,6 +81,9 @@
       <Group guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup3" priority="0x2130">
         <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcMenuGroup"/>
       </Group>
+      <Group guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup4" priority="0x2140">
+        <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcMenuGroup"/>
+      </Group>
     </Groups>
 
     <!--Buttons section. -->
@@ -167,17 +170,17 @@
           <ButtonText>Grpc代码</ButtonText>
         </Strings>
       </Button>
-      <!--<Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4Client" priority="0x2112" type="Button">
-        <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup1" />
+      <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4Client" priority="0x2112" type="Button">
+        <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup2" />
         <Icon guid="guidIcoImages4Grpc" id="icoGrpc" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Grpc客户端代码</ButtonText>
         </Strings>
-      </Button>-->
+      </Button>
 
-      <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4ServerDll" priority="0x2121" type="Button">
-        <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup2" />
+      <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4ClientDll" priority="0x2121" type="Button">
+        <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup3" />
         <Icon guid="guidIcoImages4Dll" id="icoDll" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
@@ -193,8 +196,8 @@
         </Strings>
       </Button>-->
 
-      <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4ServerNuget" priority="0x2131" type="Button">
-        <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup3" />
+      <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4ClientNuget" priority="0x2122" type="Button">
+        <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup4" />
         <Icon guid="guidIcoImages4Nuget" id="icoNuget" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
@@ -265,15 +268,14 @@
       <IDSymbol name="GrpcSubMenuGroup1" value="0x2110"/>
       <IDSymbol name="GrpcSubMenuGroup2" value="0x2120"/>
       <IDSymbol name="GrpcSubMenuGroup3" value="0x2130"/>
+      <IDSymbol name="GrpcSubMenuGroup4" value="0x2140"/>
 
       <IDSymbol name="GrpcGen4Server" value="0x2111" />
       <IDSymbol name="GrpcGen4Client" value="0x2112" />
 
-      <IDSymbol name="GrpcGen4ServerDll" value="0x2121" />
-      <IDSymbol name="GrpcGen4ClientDll" value="0x2122" />
+      <IDSymbol name="GrpcGen4ClientDll" value="0x2121" />
 
-      <IDSymbol name="GrpcGen4ServerNuget" value="0x2131" />
-      <IDSymbol name="GrpcGen4ClientNuget" value="0x2132" />
+      <IDSymbol name="GrpcGen4ClientNuget" value="0x2122" />
     </GuidSymbol>
 
    

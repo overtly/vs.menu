@@ -13,6 +13,10 @@ namespace VS.Menu.GrpcGenCore
         /// </summary>
         Origin,
         /// <summary>
+        /// Client
+        /// </summary>
+        Client,
+        /// <summary>
         /// 服务端dll
         /// </summary>
         GenDll,

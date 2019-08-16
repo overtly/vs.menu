@@ -111,42 +111,75 @@ namespace VS.Menu.GrpcGenCore
 
             // 依赖的命名空间可能会改
             var namespaces = DependenceHelper.GetGrpcNamespace();
-            var thriftProxyBuilder = new StringBuilder();
-            thriftProxyBuilder.Append($"using {namespaces};");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append($"using {namespaces}.Intercept;");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("using System;");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("using System.IO;");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("using __GrpcService = " + mainClassName + ";");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("namespace " + csNamespace);
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("{");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("#if NET45 || NET46 || NET47");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("public class ClientManager {");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("public static IClientTracer Tracer { get; set; } = default(IClientTracer);");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("public static __GrpcService." + clientName + " Instance{get{");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, \"dllconfigs/" + csNamespace + ".dll.config\");");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("return GrpcClientManager<__GrpcService." + clientName + ">.Get(configPath, Tracer);");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("} }");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("}");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("#endif");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("}");
+            var grpcBuilder = new StringBuilder();
+            grpcBuilder.Append($"using Grpc.Core;");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append($"using {namespaces};");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append($"using {namespaces}.Intercept;");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("using System;");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("using System.Collections.Concurrent;");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("using System.IO;");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("using __GrpcService = " + mainClassName + ";");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("namespace " + csNamespace);
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("{");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("#if NET45 || NET46 || NET47");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("public class ClientManager {");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("public static IClientTracer Tracer { get; set; } = default(IClientTracer);");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("public static string ConfigPath { get; set; } = \"dllconfigs/" + csNamespace + ".dll.config\";");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("public static __GrpcService." + clientName + " Instance{get{");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("var abConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigPath);");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("return GrpcClientManager<__GrpcService." + clientName + ">.Get(abConfigPath, Tracer);");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("} }");
+            grpcBuilder.Append(Environment.NewLine);
 
-            return thriftProxyBuilder.ToString();
+            // 配置
+            grpcBuilder.Append("private static readonly ConcurrentDictionary<Type, string> configMap = new ConcurrentDictionary<Type, string>();");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("public static void Configure<T>(string configPath) { configMap.AddOrUpdate(typeof(T), configPath, (t, s) => configPath); }");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("public static string GetConfigure<T>() { if (configMap.TryGetValue(typeof(T), out string configPath)) return configPath; return ConfigPath;}");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("}");
+            grpcBuilder.Append(Environment.NewLine);
+
+            // 多服务
+            grpcBuilder.Append("public class ClientManager<T> : ClientManager where T : ClientBase");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("{");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("public static new T Instance{ get {");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("var configPath = GetConfigure<T>();");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("var abConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configPath);");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("return GrpcClientManager<T>.Get(abConfigPath, Tracer);");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("} }");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("}");
+
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("#endif");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("}");
+
+            return grpcBuilder.ToString();
         }
 
         /// <summary>
@@ -482,74 +515,74 @@ namespace VS.Menu.GrpcGenCore
             var nugetId = csNamespace;
 
             // 输出zookeeper.config
-            var thriftProxyBuilder = new StringBuilder();
-            thriftProxyBuilder.Append("<?xml version=\"1.0\"?>");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("<package>");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("  <metadata>");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("    <id>" + nugetId + "</id>");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("    <title>" + csNamespace + "</title>");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("    <version>1.0." + DateTime.Now.ToString("yyyyMMddHH") + "</version>");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("    <authors>Overt</authors>");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("    <owners>Overt</owners>");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("    <requireLicenseAcceptance>false</requireLicenseAcceptance>");
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("    <description>" + csNamespace + "</description>");
-            thriftProxyBuilder.Append(Environment.NewLine);
+            var grpcBuilder = new StringBuilder();
+            grpcBuilder.Append("<?xml version=\"1.0\"?>");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("<package>");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("  <metadata>");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("    <id>" + nugetId + "</id>");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("    <title>" + csNamespace + "</title>");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("    <version>1.0." + DateTime.Now.ToString("yyyyMMddHH") + "</version>");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("    <authors>Overt</authors>");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("    <owners>Overt</owners>");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("    <requireLicenseAcceptance>false</requireLicenseAcceptance>");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("    <description>" + csNamespace + "</description>");
+            grpcBuilder.Append(Environment.NewLine);
 
-            thriftProxyBuilder.Append("    <copyright>Copyright " + DateTime.Now.Year + "</copyright>");
-            thriftProxyBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("    <copyright>Copyright " + DateTime.Now.Year + "</copyright>");
+            grpcBuilder.Append(Environment.NewLine);
 
             // 依赖
-            thriftProxyBuilder.Append("    <dependencies>");
-            thriftProxyBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("    <dependencies>");
+            grpcBuilder.Append(Environment.NewLine);
 
             var type = $"grpc";
             var dependencies = DependenceHelper.Get(type);
             foreach (var dependence in dependencies)
             {
-                thriftProxyBuilder.Append($"      <dependency id=\"{dependence.PackageId}\" version=\"{dependence.Version}\" />");
-                thriftProxyBuilder.Append(Environment.NewLine);
+                grpcBuilder.Append($"      <dependency id=\"{dependence.PackageId}\" version=\"{dependence.Version}\" />");
+                grpcBuilder.Append(Environment.NewLine);
             }
 
-            thriftProxyBuilder.Append("    </dependencies>");
-            thriftProxyBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("    </dependencies>");
+            grpcBuilder.Append(Environment.NewLine);
 
-            thriftProxyBuilder.Append("  </metadata>");
-            thriftProxyBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("  </metadata>");
+            grpcBuilder.Append(Environment.NewLine);
 
             // Dll文件
-            thriftProxyBuilder.Append("  <files>");
-            thriftProxyBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("  <files>");
+            grpcBuilder.Append(Environment.NewLine);
             foreach (var filePath in net45File)
             {
                 var file = new FileInfo(filePath);
-                thriftProxyBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/net45/" + file.Name + "\" />");
+                grpcBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/net45/" + file.Name + "\" />");
             }
-            thriftProxyBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append(Environment.NewLine);
             foreach (var filePath in net46File)
             {
                 var file = new FileInfo(filePath);
-                thriftProxyBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/net46/" + file.Name + "\" />");
+                grpcBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/net46/" + file.Name + "\" />");
             }
-            //thriftProxyBuilder.Append(Environment.NewLine);
+            //grpcBuilder.Append(Environment.NewLine);
             //foreach (var filePath in net47File)
             //{
             //    var file = new FileInfo(filePath);
-            //    thriftProxyBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/net47/" + file.Name + "\" />");
+            //    grpcBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/net47/" + file.Name + "\" />");
             //}
-            thriftProxyBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append(Environment.NewLine);
             foreach (var filePath in netcore20File)
             {
                 var file = new FileInfo(filePath);
-                thriftProxyBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/netstandard2.0/" + file.Name + "\" />");
+                grpcBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/netstandard2.0/" + file.Name + "\" />");
             }
 
             // configs
@@ -562,8 +595,8 @@ namespace VS.Menu.GrpcGenCore
                     ChangeFmConfig(serviceModel, config);
                     name = csNamespace + ".dll" + file.Extension;
 
-                    thriftProxyBuilder.Append(Environment.NewLine);
-                    thriftProxyBuilder.Append("    <file src=\"" + config + "\" target=\"/content/net45/dllconfigs/" + name + "\" />");
+                    grpcBuilder.Append(Environment.NewLine);
+                    grpcBuilder.Append("    <file src=\"" + config + "\" target=\"/content/net45/dllconfigs/" + name + "\" />");
                 }
             }
             foreach (var config in net46Configs)
@@ -575,8 +608,8 @@ namespace VS.Menu.GrpcGenCore
                     ChangeFmConfig(serviceModel, config);
                     name = csNamespace + ".dll" + file.Extension;
 
-                    thriftProxyBuilder.Append(Environment.NewLine);
-                    thriftProxyBuilder.Append("    <file src=\"" + config + "\" target=\"/content/net46/dllconfigs/" + name + "\" />");
+                    grpcBuilder.Append(Environment.NewLine);
+                    grpcBuilder.Append("    <file src=\"" + config + "\" target=\"/content/net46/dllconfigs/" + name + "\" />");
                 }
             }
             //foreach (var config in net47Configs)
@@ -588,8 +621,8 @@ namespace VS.Menu.GrpcGenCore
             //        ChangeFmConfig(serviceModel, config);
             //        name = csNamespace + ".dll" + file.Extension;
 
-            //        thriftProxyBuilder.Append(Environment.NewLine);
-            //        thriftProxyBuilder.Append("    <file src=\"" + config + "\" target=\"/content/net47/dllconfigs/" + name + "\" />");
+            //        grpcBuilder.Append(Environment.NewLine);
+            //        grpcBuilder.Append("    <file src=\"" + config + "\" target=\"/content/net47/dllconfigs/" + name + "\" />");
             //    }
             //}
 
@@ -603,19 +636,19 @@ namespace VS.Menu.GrpcGenCore
                     ChangeCoreConfig(serviceModel, config);
                     name = csNamespace + ".dll" + file.Extension;
 
-                    thriftProxyBuilder.Append(Environment.NewLine);
-                    thriftProxyBuilder.Append("    <file src=\"" + config + "\" target=\"/content/netstandard2.0/dllconfigs/" + name + "\" />");
+                    grpcBuilder.Append(Environment.NewLine);
+                    grpcBuilder.Append("    <file src=\"" + config + "\" target=\"/content/netstandard2.0/dllconfigs/" + name + "\" />");
                 }
             }
 
-            thriftProxyBuilder.Append(Environment.NewLine);
-            thriftProxyBuilder.Append("  </files>");
-            thriftProxyBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("  </files>");
+            grpcBuilder.Append(Environment.NewLine);
 
-            thriftProxyBuilder.Append("</package>");
-            thriftProxyBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("</package>");
+            grpcBuilder.Append(Environment.NewLine);
 
-            return thriftProxyBuilder.ToString();
+            return grpcBuilder.ToString();
         }
 
 

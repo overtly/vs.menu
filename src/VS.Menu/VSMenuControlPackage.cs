@@ -127,39 +127,27 @@ namespace VS.Menu
                 menuItem_GrpcServer.BeforeQueryStatus += menuItem4Grpc_BeforeQueryStatus;
                 mcs.AddCommand(menuItem_GrpcServer);
 
-                //GrpcClient Code
-                //CommandID menuCommandID_GrpcClient = new CommandID(GuidList.guidVSMenuControlCmdSet4Grpc, (int)PkgCmdIDList.GrpcGen4Client);
-                //OleMenuCommand menuItem_GrpcClient = new OleMenuCommand(MenuItem4AsyncOldCallback, menuCommandID_GrpcClient);
-                //menuItem_GrpcClient.BeforeQueryStatus += menuItem4Grpc_BeforeQueryStatus;
-                //mcs.AddCommand(menuItem_GrpcClient);
+                // GrpcClient Code
+                CommandID menuCommandID_GrpcClient = new CommandID(GuidList.guidVSMenuControlCmdSet4Grpc, (int)PkgCmdIDList.GrpcGen4Client);
+                OleMenuCommand menuItem_GrpcClient = new OleMenuCommand(MenuItem4GrpcClientCallback, menuCommandID_GrpcClient);
+                menuItem_GrpcClient.BeforeQueryStatus += menuItem4Grpc_BeforeQueryStatus;
+                mcs.AddCommand(menuItem_GrpcClient);
                 #endregion
 
                 #region Dll Gen
                 //GrpcServer Dll
-                CommandID menuCommandID_GrpcServerDll = new CommandID(GuidList.guidVSMenuControlCmdSet4Grpc, (int)PkgCmdIDList.GrpcGen4ServerDll);
+                CommandID menuCommandID_GrpcServerDll = new CommandID(GuidList.guidVSMenuControlCmdSet4Grpc, (int)PkgCmdIDList.GrpcGen4ClientDll);
                 OleMenuCommand menuItem_GrpcServerDll = new OleMenuCommand(MenuItem4GrpcDllCallback, menuCommandID_GrpcServerDll);
                 menuItem_GrpcServerDll.BeforeQueryStatus += menuItem4Grpc_BeforeQueryStatus;
                 mcs.AddCommand(menuItem_GrpcServerDll);
-
-                //GrpcClient Dll
-                //CommandID menuCommandID_GrpcClientDll = new CommandID(GuidList.guidVSMenuControlCmdSet4Grpc, (int)PkgCmdIDList.GrpcGen4ClientDll);
-                //OleMenuCommand menuItem_GrpcClientDll = new OleMenuCommand(MenuItem4AsyncOldCallback, menuCommandID_GrpcClientDll);
-                //menuItem_GrpcClientDll.BeforeQueryStatus += menuItem4Grpc_BeforeQueryStatus;
-                //mcs.AddCommand(menuItem_GrpcClientDll);
                 #endregion
 
                 #region Nuget Gen
                 //GrpcServer Nuget
-                CommandID menuCommandID_GrpcServerNuget = new CommandID(GuidList.guidVSMenuControlCmdSet4Grpc, (int)PkgCmdIDList.GrpcGen4ServerNuget);
+                CommandID menuCommandID_GrpcServerNuget = new CommandID(GuidList.guidVSMenuControlCmdSet4Grpc, (int)PkgCmdIDList.GrpcGen4ClientNuget);
                 OleMenuCommand menuItem_GrpcServerNuget = new OleMenuCommand(MenuItem4GrpcNugetCallback, menuCommandID_GrpcServerNuget);
                 menuItem_GrpcServerNuget.BeforeQueryStatus += menuItem4Grpc_BeforeQueryStatus;
                 mcs.AddCommand(menuItem_GrpcServerNuget);
-
-                //GrpcClient Nuget
-                //CommandID menuCommandID_GrpcClientNuget = new CommandID(GuidList.guidVSMenuControlCmdSet4Grpc, (int)PkgCmdIDList.GrpcGen4ClientNuget);
-                //OleMenuCommand menuItem_GrpcClientNuget = new OleMenuCommand(MenuItem4AsyncOldCallback, menuCommandID_GrpcClientNuget);
-                //menuItem_GrpcClientNuget.BeforeQueryStatus += menuItem4Grpc_BeforeQueryStatus;
-                //mcs.AddCommand(menuItem_GrpcClientNuget);
                 #endregion
                 #endregion
             }
@@ -387,6 +375,27 @@ namespace VS.Menu
 
             var errorMsg = string.Empty;
             var result = GrpcGenerator.Default.GenCsharp(dte.ActiveDocument.FullName, EnumGrpcGenType.Origin, out errorMsg);
+            if (!result)
+                ShowMsg(errorMsg);
+
+            HideProcess(dte);
+        }
+
+        private void MenuItem4GrpcClientCallback(object sender, EventArgs e)
+        {
+            var dte = GetService(typeof(DTE)) as DTE;
+            if (!CheckDte(dte))
+                return;
+
+            if (Utility.InProcess)
+            {
+                ShowMsg("上一个命令正在执行,请等待...");
+                return;
+            }
+            ShowProcess(dte);
+
+            var errorMsg = string.Empty;
+            var result = GrpcGenerator.Default.GenCsharp(dte.ActiveDocument.FullName, EnumGrpcGenType.Client, out errorMsg);
             if (!result)
                 ShowMsg(errorMsg);
 

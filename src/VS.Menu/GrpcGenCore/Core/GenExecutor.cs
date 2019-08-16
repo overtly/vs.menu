@@ -120,6 +120,10 @@ namespace VS.Menu.GrpcGenCore
             var proxyFilePath = Path.Combine(resultDic, "ClientManager.cs");
             Utility.WriteNewFile(proxyFilePath, proxyCode);
 
+            // 如果只需要生成代码
+            if(genType == EnumGrpcGenType.Client)
+                return true;
+
             #region 第二次编译
             // 每次生成都只能生成一次文件夹路径
             fileName = new FileInfo(filePath).Name;
