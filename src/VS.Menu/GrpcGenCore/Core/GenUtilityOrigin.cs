@@ -136,13 +136,11 @@ namespace VS.Menu.GrpcGenCore
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("public static IClientTracer Tracer { get; set; } = default(IClientTracer);");
             grpcBuilder.Append(Environment.NewLine);
-            grpcBuilder.Append("public static string ConfigPath { get; set; } = \"dllconfigs/" + csNamespace + ".dll.config\";");
+            grpcBuilder.Append("private static string DefaultConfigPath { get; set; } = \"dllconfigs/" + csNamespace + ".dll.config\";");
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("public static __GrpcService." + clientName + " Instance{get{");
             grpcBuilder.Append(Environment.NewLine);
-            grpcBuilder.Append("var abConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigPath);");
-            grpcBuilder.Append(Environment.NewLine);
-            grpcBuilder.Append("return GrpcClientManager<__GrpcService." + clientName + ">.Get(abConfigPath, Tracer);");
+            grpcBuilder.Append("return ClientManager<__GrpcService." + clientName + ">.Instance;");
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("} }");
             grpcBuilder.Append(Environment.NewLine);
@@ -152,7 +150,7 @@ namespace VS.Menu.GrpcGenCore
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("public static void Configure<T>(string configPath) { configMap.AddOrUpdate(typeof(T), configPath, (t, s) => configPath); }");
             grpcBuilder.Append(Environment.NewLine);
-            grpcBuilder.Append("public static string GetConfigure<T>() { if (configMap.TryGetValue(typeof(T), out string configPath)) return configPath; return ConfigPath;}");
+            grpcBuilder.Append("public static string GetConfigure<T>() { if (configMap.TryGetValue(typeof(T), out string configPath)) return configPath; return DefaultConfigPath;}");
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("}");
             grpcBuilder.Append(Environment.NewLine);
