@@ -113,7 +113,6 @@ namespace VS.Menu.GrpcGenCore
             var clientName = clientClass.Name;
 
             // 依赖的命名空间可能会改
-            var namespaces = DependenceHelper.GetGrpcNamespace();
             var grpcBuilder = new StringBuilder();
             grpcBuilder.Append($"using Grpc.Core;");
             grpcBuilder.Append(Environment.NewLine);
