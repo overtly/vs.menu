@@ -102,6 +102,9 @@ namespace VS.Menu.GrpcGenCore
         {
             var a2 = Assembly.LoadFrom(grpcDllPath);
             var classes = a2.GetExportedTypes().Where(oo => oo.FullName.IndexOf("+") > -1 && oo.FullName.EndsWith("Client"));
+            if ((classes?.Count() ?? 0) <= 0)
+                throw new Exception("不存在任何Service");
+
             var clientClass = classes.First();
 
             csNamespace = clientClass.Namespace;
