@@ -118,5 +118,20 @@ namespace VS.Menu
                 action();
             }));
         }
+
+        private void LvDependencies_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (lvDependencies.SelectedItem == null)
+                return;
+
+            var packageId = ((dynamic)lvDependencies.SelectedItem).PackageId;
+            var item = dependencies.FirstOrDefault(oo => oo.PackageId == packageId);
+            CrossThreadExecuteUI(() =>
+            {
+                tbPackageId.Text = item.PackageId;
+                tbNamespace.Text = item.Namespace;
+                tbVersion.Text = item.Version;
+            });
+        }
     }
 }
