@@ -1,12 +1,9 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace VS.Menu.Helper
 {
@@ -49,7 +46,7 @@ namespace VS.Menu.Helper
             get
             {
                 var path = Path.Combine(Utility.AppBaseResourceDic, "Nuget.exe");
-                Utility.ExportFile(path, Resources.NuGetExe);
+                ExportFile(path, Resources.NuGetExe);
 
                 return path;
             }
@@ -57,22 +54,23 @@ namespace VS.Menu.Helper
         #endregion
 
         #endregion
-
         static Utility()
         {
             #region 创建临时目录
-            AppBaseDic = System.IO.Path.Combine(System.IO.Path.GetTempPath(), TmpFoldName);
+            var rootPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (string.IsNullOrEmpty(rootPath))
+                rootPath = $"C:\\Documents";
 
-            if (!System.IO.Directory.Exists(AppBaseDic))
+            AppBaseDic = Path.Combine(rootPath, TmpFoldName);
+            if (!Directory.Exists(AppBaseDic))
             {
-                try { System.IO.Directory.CreateDirectory(AppBaseDic); }
+                try { Directory.CreateDirectory(AppBaseDic); }
                 catch { }
             }
             #endregion
         }
 
         #region Public Methods
-
         /// <summary>
         /// 检测文件夹目录存在
         /// </summary>
@@ -92,12 +90,16 @@ namespace VS.Menu.Helper
         {
             return !string.IsNullOrEmpty(filePath) && File.Exists(filePath);
         }
+
+
         /// <summary>
         /// 创建目录
         /// </summary>
         /// <param name="dicPath"></param>
         public static void MakeDir(string dicPath)
         {
+            if (Directory.Exists(dicPath))
+                return;
             var info = Directory.CreateDirectory(dicPath);
             Thread.Sleep(20);
         }

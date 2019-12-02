@@ -21,7 +21,8 @@ namespace VS.Menu.Helper
         public static List<DependenceModel> Get(string type)
         {
             var data = new List<DependenceModel>();
-            var filePath = Path.Combine(Utility.AppBaseDic, "depend", type + ".data");
+            var fold = GetFold();
+            var filePath = Path.Combine(fold, type + ".data");
             if (string.IsNullOrEmpty(filePath))
                 return data;
 
@@ -52,7 +53,7 @@ namespace VS.Menu.Helper
                 {
                     data = new List<DependenceModel>()
                     {
-                        new DependenceModel(){ PackageId = "Overt.Core.Grpc", Version= "1.0.0", Namespace = "Overt.Core.Grpc" },
+                        new DependenceModel(){ PackageId = "Overt.Core.Grpc", Version= "1.0.3", Namespace = "Overt.Core.Grpc" },
                     };
                 }
                 Save(data, type);
@@ -86,6 +87,18 @@ namespace VS.Menu.Helper
         }
 
         /// <summary>
+        /// 获取Fold
+        /// </summary>
+        /// <returns></returns>
+        public static string GetFold()
+        {
+            var rootPath = Utility.AppBaseDic;
+            var path = Path.Combine(rootPath, "depend");
+            Utility.MakeDir(path);
+            return path;
+        }
+
+        /// <summary>
         /// 保存thrift模板文件的文件夹路径
         /// </summary>
         /// <param name="folder"></param>
@@ -95,10 +108,7 @@ namespace VS.Menu.Helper
             if (data == null || string.IsNullOrEmpty(type))
                 return;
 
-            var fold = Path.Combine(Utility.AppBaseDic, "depend");
-            if (!Directory.Exists(fold))
-                Directory.CreateDirectory(fold);
-
+            var fold = GetFold();
             var filePath = Path.Combine(fold, type + ".data");
             if (File.Exists(filePath))
             {
