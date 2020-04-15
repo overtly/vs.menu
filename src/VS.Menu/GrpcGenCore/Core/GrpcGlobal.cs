@@ -211,24 +211,32 @@ namespace VS.Menu.GrpcGenCore
         /// </summary>
         public static string MsBuildPath()
         {
-            var keyPath = @"Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache";
-            var key = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Default);
+            // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths
+            var keyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\devenv.exe";
+            var key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default);
 
             var subKeys = key.OpenSubKey(keyPath);
             if (subKeys == null)
                 return string.Empty;
 
-            var values = subKeys.GetValueNames()
-                .Where(oo => oo.Contains(@"2017") && oo.Contains(@"Common7\IDE\devenv.exe")).ToList();
-            if (values.Count() <= 0)
-            {
+            var value = subKeys.GetValue("").ToString().Replace("\"", "");
+            if (string.IsNullOrWhiteSpace(value))
                 return string.Empty;
+
+            var versions = new List<string>() { "2017", "2019" };
+            var curVersion = versions.FirstOrDefault(oo => value.Contains(oo));
+            var values = new List<string>() { value };
+            foreach (var version in versions)
+            {
+                if (version == curVersion)
+                    continue;
+                values.Add(value.Replace(curVersion, version));
             }
 
             var existMsBuildPaths = new List<string>();
             foreach (var item in values)
             {
-                var msBuildPath = item.Replace(".FriendlyAppName", "").Replace(@"Common7\IDE\devenv.exe", @"MSBuild\15.0\Bin\amd64\MSBuild.exe");
+                var msBuildPath = item.Replace(@"Common7\IDE\devenv.exe", @"MSBuild\15.0\Bin\amd64\MSBuild.exe");
                 if (File.Exists(msBuildPath))
                     existMsBuildPaths.Add(msBuildPath);
             }
@@ -237,6 +245,33 @@ namespace VS.Menu.GrpcGenCore
                 return existMsBuildPaths.FirstOrDefault(oo => oo.Contains("Enterprise"));
 
             return existMsBuildPaths.FirstOrDefault();
+
+            //var keyPath = @"Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache";
+            //var key = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Default);
+
+            //var subKeys = key.OpenSubKey(keyPath);
+            //if (subKeys == null)
+            //    return string.Empty;
+
+            //var values = subKeys.GetValueNames()
+            //    .Where(oo => oo.Contains(@"2017") && oo.Contains(@"Common7\IDE\devenv.exe")).ToList();
+            //if (values.Count() <= 0)
+            //{
+            //    return string.Empty;
+            //}
+
+            //var existMsBuildPaths = new List<string>();
+            //foreach (var item in values)
+            //{
+            //    var msBuildPath = item.Replace(".FriendlyAppName", "").Replace(@"Common7\IDE\devenv.exe", @"MSBuild\15.0\Bin\amd64\MSBuild.exe");
+            //    if (File.Exists(msBuildPath))
+            //        existMsBuildPaths.Add(msBuildPath);
+            //}
+
+            //if (existMsBuildPaths.Any(oo => oo.Contains("Enterprise")))
+            //    return existMsBuildPaths.FirstOrDefault(oo => oo.Contains("Enterprise"));
+
+            //return existMsBuildPaths.FirstOrDefault();
         }
         #endregion
     }
