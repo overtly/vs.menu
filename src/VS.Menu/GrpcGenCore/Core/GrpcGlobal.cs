@@ -99,7 +99,7 @@ namespace VS.Menu.GrpcGenCore
             // 如果有错,则错误是不会throw到客户端的
             // 所以我每次都删除这个文件夹重新创建
             Utility.DelDir(dicPath);
-            System.Threading.Thread.Sleep(20);
+            Thread.Sleep(20);
             Utility.MakeDir(dicPath);
             return dicPath;
         }
@@ -111,10 +111,10 @@ namespace VS.Menu.GrpcGenCore
         /// <returns>该目录的路径</returns>
         public static string GenProjDic(string shortFileName)
         {
-            System.Threading.Thread.Sleep(20);
+            Thread.Sleep(20);
             var dicPath = GetProjDic(shortFileName);
             Utility.DelDir(dicPath);
-            System.Threading.Thread.Sleep(20);
+            Thread.Sleep(20);
             Utility.MakeDir(dicPath);
             return dicPath;
         }
@@ -128,7 +128,7 @@ namespace VS.Menu.GrpcGenCore
         {
             var dicPath = Path.Combine(GetProjDic(shortFileName), "obj");
             Utility.DelDir(dicPath);
-            System.Threading.Thread.Sleep(20);
+            Thread.Sleep(20);
             Utility.MakeDir(dicPath);
             return dicPath;
         }
@@ -196,7 +196,7 @@ namespace VS.Menu.GrpcGenCore
             var dicPath = Path.Combine(AssemblyFolder, string.Format("ass{0}Proj", shortFileName));
 
             Utility.DelDir(dicPath);
-            System.Threading.Thread.Sleep(20);
+            Thread.Sleep(20);
             Utility.MakeDir(dicPath);
 
             dicPath = Path.Combine(dicPath, tempKey);
@@ -223,26 +223,28 @@ namespace VS.Menu.GrpcGenCore
             if (string.IsNullOrWhiteSpace(value))
                 return string.Empty;
 
-            var versions = new List<string>() { "2017", "2019" };
+            var versions = new List<string>() { "2019", "2017" }.OrderByDescending(oo => oo);
             var curVersion = versions.FirstOrDefault(oo => value.Contains(oo));
-            var values = new List<string>() { value };
+            var values = new List<string>();
             foreach (var version in versions)
             {
                 if (version == curVersion)
+                {
+                    values.Add(value);
                     continue;
+                }
                 values.Add(value.Replace(curVersion, version));
             }
 
             var existMsBuildPaths = new List<string>();
             foreach (var item in values)
             {
-                var msBuildPath = item.Replace(@"Common7\IDE\devenv.exe", @"MSBuild\15.0\Bin\amd64\MSBuild.exe");
+                var msBuildPath = item.Replace(@"Common7\IDE\devenv.exe", @"MSBuild\15.0\Bin\MSBuild.exe");
+                if (item.Contains("2019"))
+                    msBuildPath = item.Replace(@"Common7\IDE\devenv.exe", @"MSBuild\Current\Bin\MSBuild.exe");
                 if (File.Exists(msBuildPath))
                     existMsBuildPaths.Add(msBuildPath);
             }
-
-            if (existMsBuildPaths.Any(oo => oo.Contains("Enterprise")))
-                return existMsBuildPaths.FirstOrDefault(oo => oo.Contains("Enterprise"));
 
             return existMsBuildPaths.FirstOrDefault();
 
