@@ -237,11 +237,12 @@ namespace VS.Menu.GrpcGenCore
             }
 
             var existMsBuildPaths = new List<string>();
+            var replaceString = @"Common7\IDE\devenv.exe".ToLower();
             foreach (var item in values)
             {
-                var msBuildPath = item.Replace(@"Common7\IDE\devenv.exe", @"MSBuild\15.0\Bin\MSBuild.exe");
+                var msBuildPath = item.ToLower().Replace(replaceString, @"MSBuild\15.0\Bin\MSBuild.exe");
                 if (item.Contains("2019"))
-                    msBuildPath = item.Replace(@"Common7\IDE\devenv.exe", @"MSBuild\Current\Bin\MSBuild.exe");
+                    msBuildPath = item.ToLower().Replace(replaceString, @"MSBuild\Current\Bin\MSBuild.exe");
                 if (File.Exists(msBuildPath))
                     existMsBuildPaths.Add(msBuildPath);
             }
