@@ -1,5 +1,5 @@
 ﻿syntax = "proto3";
-package Sodao.GrpcExample.Service.Grpc;
+package Overt.GrpcExample.Service.Grpc;
 
 message RequestModel{
 	string key = 1;

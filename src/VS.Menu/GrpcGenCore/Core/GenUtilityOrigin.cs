@@ -112,9 +112,24 @@ namespace VS.Menu.GrpcGenCore
             var mainClassName = clientClassFullName.Split('+')[0];
             var clientName = clientClass.Name;
 
+            var type = $"grpc";
+            var dependencies = DependenceHelper.Get(type);
+            var overtCoreGrpcPag = dependencies.FirstOrDefault(oo => oo.PackageId.ToLower() == namespaces.ToLower());
+            var over1_0_5 = false;
+            try
+            {
+                over1_0_5 = new Version(overtCoreGrpcPag?.Version?.Split('-')[0]) > new Version("1.0.4.1");
+            }
+            catch (Exception ex)
+            {
+                
+            }
+
             // 依赖的命名空间可能会改
             var grpcBuilder = new StringBuilder();
             grpcBuilder.Append($"using Grpc.Core;");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append($"using Grpc.Core.Interceptors;");
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append($"using {namespaces};");
             grpcBuilder.Append(Environment.NewLine);
@@ -123,6 +138,8 @@ namespace VS.Menu.GrpcGenCore
             grpcBuilder.Append("using System;");
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("using System.Collections.Concurrent;");
+            grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("using System.Collections.Generic;");
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("using System.IO;");
             grpcBuilder.Append(Environment.NewLine);
@@ -138,6 +155,8 @@ namespace VS.Menu.GrpcGenCore
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("public static IClientTracer Tracer { get; set; } = default(IClientTracer);");
             grpcBuilder.Append(Environment.NewLine);
+            grpcBuilder.Append("public static List<Interceptor> Interceptors { get; } = new List<Interceptor>();");
+            grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("private static string DefaultConfigPath { get; set; } = \"dllconfigs/" + csNamespace + ".dll.config\";");
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("public static __GrpcService." + clientName + " Instance{get{");
@@ -146,6 +165,15 @@ namespace VS.Menu.GrpcGenCore
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("} }");
             grpcBuilder.Append(Environment.NewLine);
+            if (over1_0_5)
+            {
+                grpcBuilder.Append("public static __GrpcService." + clientName + " CreateInstance(Func<List<ServerCallInvoker>, ServerCallInvoker> getInvoker = null){");
+                grpcBuilder.Append(Environment.NewLine);
+                grpcBuilder.Append("return ClientManager<__GrpcService.GrpcExampleServiceClient>.CreateInstance(getInvoker);");
+                grpcBuilder.Append(Environment.NewLine);
+                grpcBuilder.Append("}");
+                grpcBuilder.Append(Environment.NewLine);
+            }
 
             // 配置
             grpcBuilder.Append("private static readonly ConcurrentDictionary<Type, string> configMap = new ConcurrentDictionary<Type, string>();");
@@ -162,16 +190,39 @@ namespace VS.Menu.GrpcGenCore
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("{");
             grpcBuilder.Append(Environment.NewLine);
-            grpcBuilder.Append("public static new T Instance{ get {");
-            grpcBuilder.Append(Environment.NewLine);
-            grpcBuilder.Append("var configPath = GetConfigure<T>();");
-            grpcBuilder.Append(Environment.NewLine);
-            grpcBuilder.Append("var abConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configPath);");
-            grpcBuilder.Append(Environment.NewLine);
-            grpcBuilder.Append("return GrpcClientManager<T>.Get(abConfigPath, Tracer);");
-            grpcBuilder.Append(Environment.NewLine);
-            grpcBuilder.Append("} }");
-            grpcBuilder.Append(Environment.NewLine);
+            if (over1_0_5)
+            {
+                grpcBuilder.Append("public static new T Instance => CreateInstance();");
+                grpcBuilder.Append(Environment.NewLine);
+
+                grpcBuilder.Append("public static new T CreateInstance(Func<List<ServerCallInvoker>, ServerCallInvoker> getInvoker = null) {");
+                grpcBuilder.Append(Environment.NewLine);
+                grpcBuilder.Append("var configPath = GetConfigure<T>();");
+                grpcBuilder.Append(Environment.NewLine);
+                grpcBuilder.Append("var options = new GrpcClientOptions() { Tracer = Tracer };");
+                grpcBuilder.Append(Environment.NewLine);
+                grpcBuilder.Append("if (Interceptors?.Count > 0) options.Interceptors.AddRange(Interceptors);");
+                grpcBuilder.Append(Environment.NewLine);
+                grpcBuilder.Append("return GrpcClientManager<T>.Get(configPath, options, getInvoker);");
+                grpcBuilder.Append(Environment.NewLine);
+                grpcBuilder.Append("}");
+                grpcBuilder.Append(Environment.NewLine);
+            }
+            else
+            {
+                grpcBuilder.Append("public static new T Instance{ get {");
+                grpcBuilder.Append(Environment.NewLine);
+                grpcBuilder.Append("var configPath = GetConfigure<T>();");
+                grpcBuilder.Append(Environment.NewLine);
+                grpcBuilder.Append("var abConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configPath);");
+                grpcBuilder.Append(Environment.NewLine);
+                grpcBuilder.Append("return GrpcClientManager<T>.Get(abConfigPath, Tracer);");
+                grpcBuilder.Append(Environment.NewLine);
+                grpcBuilder.Append("} }");
+                grpcBuilder.Append(Environment.NewLine);
+            }
+            
+
             grpcBuilder.Append("}");
 
             grpcBuilder.Append(Environment.NewLine);
@@ -243,7 +294,6 @@ namespace VS.Menu.GrpcGenCore
                 //File.Copy(net47File.FullName, Path.Combine(resultDic, net47Fold, nameSpace + ".dll"));
                 File.Copy(netcore20.FullName, Path.Combine(resultDic, netcoreFold, nameSpace + ".dll"));
                 #endregion
-
 
                 #region 移动Xml
                 var net45XmlFile = new FileInfo(grpcDllPath.Replace("net46", net45Fold).Replace(".dll", ".xml"));
