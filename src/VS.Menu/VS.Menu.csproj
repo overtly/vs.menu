@@ -107,6 +107,7 @@
     <Compile Include="GrpcGenCore\Core\GenExecutor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GrpcGenCore\Core\GenUtilityOrigin_GrpcNet.cs" />
     <Compile Include="GrpcGenCore\Core\GenUtilityOrigin.cs" />
     <Compile Include="GrpcGenCore\Core\GrpcGlobal.cs">
       <SubType>Code</SubType>
@@ -133,6 +134,9 @@
     </Compile>
     <Compile Include="ServiceDependence.xaml.cs">
       <DependentUpon>ServiceDependence.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceOption4Grpc_GrpcNet.xaml.cs">
+      <DependentUpon>ServiceOption4Grpc_GrpcNet.xaml</DependentUpon>
     </Compile>
     <Compile Include="ServiceOption4Thrift.xaml.cs">
       <DependentUpon>ServiceOption4Thrift.xaml</DependentUpon>
@@ -247,6 +251,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ServiceDependence.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ServiceOption4Grpc_GrpcNet.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

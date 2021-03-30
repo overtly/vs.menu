@@ -14,12 +14,12 @@ namespace VS.Menu.GrpcGenCore
         /// <summary>
         /// 创建项目xml文件
         /// </summary>
-        public static string MakeProj(IEnumerable<FileInfo> includeFiles, string csNamespace)
+        public static string MakeProj(IEnumerable<FileInfo> includeFiles, string csNamespace, string targetFrameworks = "net45;net46;netstandard2.0", string depType = "grpc")
         {
             var builder = new StringBuilder();
             AppenProjectHead(builder);
-            AppendProperty(builder, csNamespace);
-            AppendReference(builder);
+            AppendProperty(builder, csNamespace, targetFrameworks);
+            AppendReference(builder, depType);
             AppendInclude(builder, includeFiles);
             AppendProjectTial(builder);
             return builder.ToString();
@@ -51,11 +51,11 @@ namespace VS.Menu.GrpcGenCore
         /// 添加属性的xml标签
         /// </summary>
         /// <param name="builder"></param>
-        private static void AppendProperty(StringBuilder builder, string csNamespace = "")
+        private static void AppendProperty(StringBuilder builder, string csNamespace = "", string targetFrameworks = "net45;net46;netstandard2.0")
         {
             builder.Append("<PropertyGroup>");
             builder.Append(Environment.NewLine);
-            builder.Append("<TargetFrameworks>net45;net46;netstandard2.0</TargetFrameworks>");
+            builder.Append("<TargetFrameworks>" + targetFrameworks + "</TargetFrameworks>");
             builder.Append(Environment.NewLine);
             builder.Append("</PropertyGroup>");
             builder.Append(Environment.NewLine);
@@ -72,14 +72,13 @@ namespace VS.Menu.GrpcGenCore
         /// 添加引用的xml标签
         /// </summary>
         /// <param name="builder"></param>
-        private static void AppendReference(StringBuilder builder)
+        private static void AppendReference(StringBuilder builder, string depType = "grpc")
         {
             builder.Append("<ItemGroup>");
             builder.Append(Environment.NewLine);
 
             // 依赖
-            var type = $"grpc";
-            var dependencies = DependenceHelper.Get(type);
+            var dependencies = DependenceHelper.Get(depType);
             foreach (var dependence in dependencies)
             {
                 builder.Append($"<PackageReference Include=\"{dependence.PackageId}\" Version=\"{dependence.Version}\" />");

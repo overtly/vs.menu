@@ -16,7 +16,6 @@ namespace VS.Menu.GrpcGenCore
     /// </summary>
     public class GenUtilityOrigin
     {
-
         const string net45Fold = "net45";
         const string net46Fold = "net46";
         //const string net47Fold = "net47";

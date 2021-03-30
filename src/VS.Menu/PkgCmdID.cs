@@ -28,5 +28,7 @@ namespace VS.Menu
         public const uint GrpcGen4Client = 0x2121;
         public const uint GrpcGen4ClientDll = 0x2122;
         public const uint GrpcGen4ClientNuget = 0x2123;
+
+        public const uint GrpcGen4ClientNuget_GrpcNet = 0x2131;
     };
 }

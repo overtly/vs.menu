@@ -24,5 +24,10 @@ namespace VS.Menu.GrpcGenCore
         /// 客户端Nuget包
         /// </summary>
         GenNuget,
+
+        /// <summary>
+        /// 客户端Nuget包
+        /// </summary>
+        GenNuget_GrpcNet,
     }
 }

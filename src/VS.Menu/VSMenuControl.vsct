@@ -179,7 +179,6 @@
           <ButtonText>Grpc客户端代码</ButtonText>
         </Strings>
       </Button>
-
       <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4ClientDll" priority="0x2122" type="Button">
         <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup2" />
         <Icon guid="guidIcoImages4Dll" id="icoDll" />
@@ -194,6 +193,16 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Grpc客户端打包</ButtonText>
+        </Strings>
+      </Button>
+
+
+      <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4ClientNuget_GrpcNet" priority="0x2131" type="Button">
+        <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup3" />
+        <Icon guid="guidIcoImages4Nuget" id="icoNuget" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Grpc客户端打包(Base GrpcNet)</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -259,6 +268,8 @@
       <IDSymbol name="GrpcGen4Client" value="0x2121" />
       <IDSymbol name="GrpcGen4ClientDll" value="0x2122" />
       <IDSymbol name="GrpcGen4ClientNuget" value="0x2123" />
+
+      <IDSymbol name="GrpcGen4ClientNuget_GrpcNet" value="0x2131" />
     </GuidSymbol>
 
    

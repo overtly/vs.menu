@@ -68,7 +68,6 @@ namespace VS.Menu.GrpcGenCore
 
             try
             {
-
                 var resultDic = string.Empty;
                 var csNamespace = string.Empty;
                 var result = false;
@@ -87,6 +86,11 @@ namespace VS.Menu.GrpcGenCore
                     case EnumGrpcGenType.GenNuget:
                         result = GenExecutor.ExcuteNuget(sorceFile, serviceModel, tempKey, out csNamespace, out errorMsg, out resultDic);
                         break;
+
+                    case EnumGrpcGenType.GenNuget_GrpcNet:
+                        result = GenExecutor.ExecueNuget_GrpcNet(sorceFile, serviceModel, tempKey, out csNamespace, out errorMsg, out resultDic);
+                        break;
+                    
                     default:
                         errorMsg = "命令错误...";
                         break;

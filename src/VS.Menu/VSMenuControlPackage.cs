@@ -149,6 +149,14 @@ namespace VS.Menu
                 menuItem_GrpcServerNuget.BeforeQueryStatus += menuItem4Grpc_BeforeQueryStatus;
                 mcs.AddCommand(menuItem_GrpcServerNuget);
                 #endregion
+
+                #region Nuget Gen (Grpc Net)
+                //GrpcServer Nuget
+                CommandID menuCommandID_GrpcServerNuget_GrpcNet = new CommandID(GuidList.guidVSMenuControlCmdSet4Grpc, (int)PkgCmdIDList.GrpcGen4ClientNuget_GrpcNet);
+                OleMenuCommand menuItem_GrpcServerNuget_GrpcNet = new OleMenuCommand(MenuItem4GrpcNuget_GrpcNetCallback, menuCommandID_GrpcServerNuget_GrpcNet);
+                menuItem_GrpcServerNuget.BeforeQueryStatus += menuItem4Grpc_BeforeQueryStatus;
+                mcs.AddCommand(menuItem_GrpcServerNuget_GrpcNet);
+                #endregion
                 #endregion
             }
         }
@@ -430,6 +438,16 @@ namespace VS.Menu
                 return;
 
             var newWindow = new ServiceOption4Grpc(dte);
+            newWindow.ShowDialog();
+        }
+
+        private void MenuItem4GrpcNuget_GrpcNetCallback(object sender, EventArgs e)
+        {
+            var dte = GetService(typeof(DTE)) as DTE;
+            if (!CheckDte(dte))
+                return;
+
+            var newWindow = new ServiceOption4Grpc_GrpcNet(dte);
             newWindow.ShowDialog();
         }
         #endregion
