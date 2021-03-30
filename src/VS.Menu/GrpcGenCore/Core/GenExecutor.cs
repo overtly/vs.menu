@@ -262,7 +262,7 @@ namespace VS.Menu.GrpcGenCore
             resultDic = csFiles[0].Directory.FullName;
 
             // 生成配置文件
-            var coreConfigs = GenUtilityOrigin.MakeCoreConfig();
+            var coreConfigs = GenUtilityOrigin.MakeCoreConfig_GrpcNet();
             var coreConfigDic = Path.Combine(resultDic, "coreconfigs");
             Utility.MakeDir(coreConfigDic);
 

@@ -546,6 +546,101 @@ namespace VS.Menu.GrpcGenCore
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, string> MakeCoreConfig_GrpcNet()
+        {
+            var result = new Dictionary<string, string>();
+            // 输出Consul.config
+            var consulConfig = new StringBuilder();
+            consulConfig.Append("{");
+            consulConfig.Append(Environment.NewLine);
+            consulConfig.Append("  \"ConsulServer\": {");
+            consulConfig.Append(Environment.NewLine);
+            consulConfig.Append("    \"Service\": {");
+            consulConfig.Append(Environment.NewLine);
+            consulConfig.Append("      \"Address\": \"http://127.0.0.1:8500\"");
+            consulConfig.Append(Environment.NewLine);
+            consulConfig.Append("    }");
+            consulConfig.Append(Environment.NewLine);
+            consulConfig.Append("  }");
+            consulConfig.Append(Environment.NewLine);
+            consulConfig.Append("}");
+            result.Add("consulsettings.json", consulConfig.ToString());
+
+            // 输出Client.config
+            var clientConfig = new StringBuilder();
+            clientConfig.Append("{");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("  \"GrpcClient\": {");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("    \"Service\": {");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("      \"Name\": \"\",");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("      \"Scheme\":  \"http\",");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("      \"Discovery\": {");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("        \"EndPoints\": [");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("          {");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("            \"Host\": \"127.0.0.1\",");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("            \"Port\": 0");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("          }");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("        ],");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("        \"Consul\": {");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("          \"Path\": \"dllconfigs/consulsettings.json\"");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("        }");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("      }");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("    }");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("  }");
+            clientConfig.Append(Environment.NewLine);
+            clientConfig.Append("}");
+            result.Add("clientsettings.json", clientConfig.ToString());
+
+            // 输出Consul.config
+            var serverConfig = new StringBuilder();
+            serverConfig.Append("{");
+            serverConfig.Append(Environment.NewLine);
+            serverConfig.Append("  \"GrpcServer\": {");
+            serverConfig.Append(Environment.NewLine);
+            serverConfig.Append("    \"Service\": {");
+            serverConfig.Append(Environment.NewLine);
+            serverConfig.Append("      \"Name\": \"grpcservice\",");
+            serverConfig.Append(Environment.NewLine);
+            serverConfig.Append("      \"Host\": \"\",");
+            serverConfig.Append(Environment.NewLine);
+            serverConfig.Append("      \"Port\": 10001,");
+            serverConfig.Append(Environment.NewLine);
+            serverConfig.Append("      \"Consul\": {");
+            serverConfig.Append(Environment.NewLine);
+            serverConfig.Append("        \"Path\": \"dllconfigs/consulsettings.json\"");
+            serverConfig.Append(Environment.NewLine);
+            serverConfig.Append("      }");
+            serverConfig.Append(Environment.NewLine);
+            serverConfig.Append("    }");
+            serverConfig.Append(Environment.NewLine);
+            serverConfig.Append("  }");
+            serverConfig.Append(Environment.NewLine);
+            serverConfig.Append("}");
+            result.Add("grpcsettings.json", serverConfig.ToString());
+
+            return result;
+        }
+
+        /// <summary>
         /// 生成Nuspec文件
         /// </summary>
         /// <param name="complieFold">编译后的数据的文件夹</param>
