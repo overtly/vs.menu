@@ -16,54 +16,11 @@ namespace VS.Menu.GrpcGenCore
     /// </summary>
     public class GenUtilityOrigin_GrpcNet
     {
-        const string netcoreFold = "netcoreapp3.1";
+        const string netstandardFold = "netstandard2.1";
+        const string netcoreappFold = "netcoreapp3.0";
+        const string net5Fold = "net5.0";
         const string dllconfigFold = "dllconfigs";
-        static string namespaces => DependenceHelper.GetGrpcNamespace();
-
-        /// <summary>
-        /// 从thrift命令生成的源文件dll中获取反射
-        /// </summary>
-        /// <param name="thriftDllPath"></param>
-        /// <param name="dllconfigs">key:fileName,value:content</param>
-        /// <returns></returns>
-        public static string GetNamespace(string grpcDllPath)
-        {
-            var a2 = Assembly.LoadFrom(grpcDllPath);
-            return a2.GetTypes().ToList().First().Namespace;
-        }
-
-        /// <summary>
-        /// 生成项目的信息类
-        /// </summary>
-        /// <param name="thriftDllPath"></param>
-        /// <returns></returns>
-        public static string GenAssemblyInfoCs(string grpcDllPath)
-        {
-            var csNamespace = GetNamespace(grpcDllPath);
-            var assemblyInfoBuilder = new StringBuilder();
-            assemblyInfoBuilder.Append("using System.Reflection;");
-            assemblyInfoBuilder.Append(Environment.NewLine);
-            assemblyInfoBuilder.Append("using System.Runtime.CompilerServices;");
-            assemblyInfoBuilder.Append(Environment.NewLine);
-            assemblyInfoBuilder.Append("using System.Runtime.InteropServices;");
-            assemblyInfoBuilder.Append(Environment.NewLine);
-            assemblyInfoBuilder.Append("[assembly: AssemblyTitle(\"" + csNamespace + "\")]");
-            assemblyInfoBuilder.Append(Environment.NewLine);
-            assemblyInfoBuilder.Append("[assembly: AssemblyCompany(\"Overt\")]");
-            assemblyInfoBuilder.Append(Environment.NewLine);
-            assemblyInfoBuilder.Append("[assembly: AssemblyProduct(\"" + csNamespace + "\")]");
-            assemblyInfoBuilder.Append(Environment.NewLine);
-            assemblyInfoBuilder.Append("[assembly: AssemblyCopyright(\"Copyright © Overt " + DateTime.Now.Year + "\")]");
-            assemblyInfoBuilder.Append(Environment.NewLine);
-            assemblyInfoBuilder.Append("[assembly: ComVisible(false)]");
-            assemblyInfoBuilder.Append(Environment.NewLine);
-            assemblyInfoBuilder.Append("[assembly: AssemblyVersion(\"1.0.0.0\")]");
-            assemblyInfoBuilder.Append(Environment.NewLine);
-            assemblyInfoBuilder.Append("[assembly: AssemblyFileVersion(\"1.0.0.0\")]");
-            assemblyInfoBuilder.Append(Environment.NewLine);
-
-            return assemblyInfoBuilder.ToString();
-        }
+        static string namespaces => DependenceHelper.GetGrpcNamespace("grpch2");
 
         /// <summary>
         /// 移动到目录文件
@@ -76,33 +33,48 @@ namespace VS.Menu.GrpcGenCore
             {
                 #region 移动Dll
                 var resultDic = GrpcGlobal.GenResultDic(shortFileName);
+                Utility.MakeDir(Path.Combine(resultDic, netstandardFold));
+                Utility.MakeDir(Path.Combine(resultDic, netcoreappFold));
+                Utility.MakeDir(Path.Combine(resultDic, net5Fold));
+
+                var netstandardFile = new FileInfo(grpcDllPath);
+                var netcoreappFile = new FileInfo(grpcDllPath.Replace("netstandard2.1", netcoreappFold));
+                var net5File = new FileInfo(grpcDllPath.Replace("netstandard2.1", net5Fold));
+
+                File.Copy(netstandardFile.FullName, Path.Combine(resultDic, netstandardFold, nameSpace + ".dll"));
+                File.Copy(netcoreappFile.FullName, Path.Combine(resultDic, netcoreappFold, nameSpace + ".dll"));
+                File.Copy(net5File.FullName, Path.Combine(resultDic, net5Fold, nameSpace + ".dll"));
                 #endregion
 
                 #region 移动Xml
+                var netstandardXmlFile = new FileInfo(grpcDllPath.Replace(".dll", ".xml")); 
+                var netcoreappXmlFile = new FileInfo(grpcDllPath.Replace("netstandard2.1", netcoreappFold).Replace(".dll", ".xml"));
+                var net5XmlFile = new FileInfo(grpcDllPath.Replace("netstandard2.1", net5Fold).Replace(".dll", ".xml"));
+
+                File.Copy(netstandardXmlFile.FullName, Path.Combine(resultDic, netstandardFold, nameSpace + ".xml"));
+                File.Copy(netcoreappXmlFile.FullName, Path.Combine(resultDic, netcoreappFold, nameSpace + ".xml"));
+                File.Copy(net5XmlFile.FullName, Path.Combine(resultDic, net5Fold, nameSpace + ".xml"));
                 #endregion
 
                 #region 移动Config
                 var genFold = GrpcGlobal.GenFolder;
 
-                var fmConfigFold = Path.Combine(genFold, "fmconfigs");
-                var fmConfigs = Directory.GetFiles(fmConfigFold);
-
-
-                
-
-                //var newNet47ConfigFold = Path.Combine(resultDic, net47Fold, dllconfigFold);
-                //Utility.MakeDic(newNet47ConfigFold);
-
                 var coreConfigFold = Path.Combine(genFold, "coreconfigs");
                 var coreConfigs = Directory.GetFiles(coreConfigFold);
 
-                var newCoreConfigFold = Path.Combine(resultDic, netcoreFold, dllconfigFold);
-                Utility.MakeDir(newCoreConfigFold);
+                var newNetStandardFold = Path.Combine(resultDic, netstandardFold, dllconfigFold);
+                var newNetCoreAppFold = Path.Combine(resultDic, netcoreappFold, dllconfigFold);
+                var newNet5Fold = Path.Combine(resultDic, net5Fold, dllconfigFold);
+                Utility.MakeDir(newNetStandardFold);
+                Utility.MakeDir(newNetCoreAppFold);
+                Utility.MakeDir(newNet5Fold);
 
                 foreach (var coreConfig in coreConfigs)
                 {
                     var file = new FileInfo(coreConfig);
-                    File.Copy(coreConfig, Path.Combine(newCoreConfigFold, file.Name));
+                    File.Copy(coreConfig, Path.Combine(newNetStandardFold, file.Name));
+                    File.Copy(coreConfig, Path.Combine(newNetCoreAppFold, file.Name));
+                    File.Copy(coreConfig, Path.Combine(newNet5Fold, file.Name));
                 }
                 #endregion
 
@@ -122,15 +94,17 @@ namespace VS.Menu.GrpcGenCore
         /// <returns></returns>
         public static string GenNuspecXml(string complieFold, ServiceModel serviceModel, string csNamespace)
         {
-            //var net47File = Directory.GetFiles(Path.Combine(complieFold, net47Fold));
-            //var net47Configs = Directory.GetFiles(Path.Combine(complieFold, net47Fold, dllconfigFold));
+            var netstandardFile = Directory.GetFiles(Path.Combine(complieFold, netstandardFold));
+            var netstandardConfigs = Directory.GetFiles(Path.Combine(complieFold, netstandardFold, dllconfigFold));
 
-            var netcore20File = Directory.GetFiles(Path.Combine(complieFold, netcoreFold));
-            var netcore20Configs = Directory.GetFiles(Path.Combine(complieFold, netcoreFold, dllconfigFold));
+            var netcoreappFile = Directory.GetFiles(Path.Combine(complieFold, netcoreappFold));
+            var netcoreappConfigs = Directory.GetFiles(Path.Combine(complieFold, netcoreappFold, dllconfigFold));
+
+            var net5File = Directory.GetFiles(Path.Combine(complieFold, net5Fold));
+            var net5Configs = Directory.GetFiles(Path.Combine(complieFold, net5Fold, dllconfigFold));
 
             var nugetId = csNamespace;
 
-            // 输出zookeeper.config
             var grpcBuilder = new StringBuilder();
             grpcBuilder.Append("<?xml version=\"1.0\"?>");
             grpcBuilder.Append(Environment.NewLine);
@@ -160,7 +134,7 @@ namespace VS.Menu.GrpcGenCore
             grpcBuilder.Append("    <dependencies>");
             grpcBuilder.Append(Environment.NewLine);
 
-            var type = $"grpc";
+            var type = $"grpch2";
             var dependencies = DependenceHelper.Get(type);
             foreach (var dependence in dependencies)
             {
@@ -178,36 +152,25 @@ namespace VS.Menu.GrpcGenCore
             grpcBuilder.Append("  <files>");
             grpcBuilder.Append(Environment.NewLine);
             
-            //grpcBuilder.Append(Environment.NewLine);
-            //foreach (var filePath in net47File)
-            //{
-            //    var file = new FileInfo(filePath);
-            //    grpcBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/net47/" + file.Name + "\" />");
-            //}
             grpcBuilder.Append(Environment.NewLine);
-            foreach (var filePath in netcore20File)
+            foreach (var filePath in netstandardFile)
             {
                 var file = new FileInfo(filePath);
-                grpcBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/netstandard2.0/" + file.Name + "\" />");
+                grpcBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/netstandard2.1/" + file.Name + "\" />");
+            }
+            foreach (var filePath in netcoreappFile)
+            {
+                var file = new FileInfo(filePath);
+                grpcBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/netcoreapp3.0/" + file.Name + "\" />");
+            }
+            foreach (var filePath in net5File)
+            {
+                var file = new FileInfo(filePath);
+                grpcBuilder.Append("    <file src=\"" + filePath + "\" target=\"/lib/net5.0/" + file.Name + "\" />");
             }
 
             // configs
-            
-            //foreach (var config in net47Configs)
-            //{
-            //    var file = new FileInfo(config);
-            //    var name = file.Name;
-            //    if (file.Name.ToLower().IndexOf("client") > -1)
-            //    {
-            //        ChangeFmConfig(serviceModel, config);
-            //        name = csNamespace + ".dll" + file.Extension;
-
-            //        grpcBuilder.Append(Environment.NewLine);
-            //        grpcBuilder.Append("    <file src=\"" + config + "\" target=\"/content/net47/dllconfigs/" + name + "\" />");
-            //    }
-            //}
-
-            foreach (var config in netcore20Configs)
+            foreach (var config in netstandardConfigs)
             {
                 var file = new FileInfo(config);
                 var name = file.Name;
@@ -218,7 +181,35 @@ namespace VS.Menu.GrpcGenCore
                     name = csNamespace + ".dll" + file.Extension;
 
                     grpcBuilder.Append(Environment.NewLine);
-                    grpcBuilder.Append("    <file src=\"" + config + "\" target=\"/content/netstandard2.0/dllconfigs/" + name + "\" />");
+                    grpcBuilder.Append("    <file src=\"" + config + "\" target=\"/content/netstandard2.1/dllconfigs/" + name + "\" />");
+                }
+            }
+            foreach (var config in netcoreappConfigs)
+            {
+                var file = new FileInfo(config);
+                var name = file.Name;
+
+                if (name.ToLower().IndexOf("client") > -1)
+                {
+                    ChangeCoreConfig(serviceModel, config);
+                    name = csNamespace + ".dll" + file.Extension;
+
+                    grpcBuilder.Append(Environment.NewLine);
+                    grpcBuilder.Append("    <file src=\"" + config + "\" target=\"/content/netcoreapp3.0/dllconfigs/" + name + "\" />");
+                }
+            }
+            foreach (var config in net5Configs)
+            {
+                var file = new FileInfo(config);
+                var name = file.Name;
+
+                if (name.ToLower().IndexOf("client") > -1)
+                {
+                    ChangeCoreConfig(serviceModel, config);
+                    name = csNamespace + ".dll" + file.Extension;
+
+                    grpcBuilder.Append(Environment.NewLine);
+                    grpcBuilder.Append("    <file src=\"" + config + "\" target=\"/content/net5.0/dllconfigs/" + name + "\" />");
                 }
             }
 

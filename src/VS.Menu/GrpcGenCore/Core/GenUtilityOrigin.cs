@@ -32,9 +32,10 @@ namespace VS.Menu.GrpcGenCore
         /// <returns>
         /// 是否成功以最终是否生成gen-csharp文件为准 这里会out出输出和错误 
         /// </returns>
-        public static FileInfo[] GenGrpc(string filePath, out string error)
+        public static FileInfo[] GenGrpc(string filePath, out string error, out string csNamespace)
         {
             error = string.Empty;
+            csNamespace = string.Empty;
             Utility.ClearDir(GrpcGlobal.GenFolder);
 
             #region 获取Import文件
@@ -44,13 +45,15 @@ namespace VS.Menu.GrpcGenCore
             var protos = new List<string>();
             while ((nextLine = sr.ReadLine()) != null)
             {
-                if (nextLine.IndexOf("import") == -1)
-                    continue;
-                var proto = nextLine.Replace("import", "").Replace("\"", "").Replace(";", "").Trim();
-                if (!proto.EndsWith(".proto"))
-                    continue;
-
-                protos.Add(proto);
+                if (nextLine.IndexOf("import") > -1)
+                {
+                    var proto = nextLine.Replace("import", "").Replace("\"", "").Replace(";", "").Trim();
+                    if (proto.EndsWith(".proto"))
+                        protos.Add(proto);
+                }
+                
+                if(nextLine.IndexOf("package") > -1)
+                    csNamespace = nextLine.Replace("package", "").Replace("\"", "").Replace(";", "").Trim();
             }
             #endregion
 

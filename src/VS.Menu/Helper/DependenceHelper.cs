@@ -78,10 +78,9 @@ namespace VS.Menu.Helper
         /// 获取命名空间
         /// </summary>
         /// <returns></returns>
-        public static string GetGrpcNamespace()
+        public static string GetGrpcNamespace(string depType = "grpc")
         {
-            var type = "grpc";
-            var dependencies = Get(type);
+            var dependencies = Get(depType);
             return dependencies.FirstOrDefault(oo => oo.PackageId.ToLower().Contains("grpc"))?.Namespace ??
                 "Overt.Core.Grpc";
         }
