@@ -41,13 +41,13 @@
       <Menu guid="guidVSMenuContolCmdSet4Thrift" id="ThriftMenuGroup" priority="0x1100" type="Menu">
         <Parent guid="guidVSMenuControlCmdSet4All" id="VSMenuGroup"/>
         <Strings>
-          <ButtonText>Thrift代码生成</ButtonText>
+          <ButtonText>Thrift驱动助手</ButtonText>
         </Strings>
       </Menu>
       <Menu guid="guidVSMenuControlCmdSet4Grpc" id="GrpcMenuGroup" priority="0x2100" type="Menu">
         <Parent guid="guidVSMenuControlCmdSet4All" id="VSMenuGroup"/>
         <Strings>
-          <ButtonText>Grpc代码生成</ButtonText>
+          <ButtonText>OvertGrpc驱动助手</ButtonText>
         </Strings>
       </Menu>
     </Menus>
@@ -167,10 +167,11 @@
         <Icon guid="guidIcoImages4Grpc" id="icoGrpc" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <ButtonText>Grpc代码</ButtonText>
+          <ButtonText>Grpc基础代码</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4Client" priority="0x2112" type="Button">
+      
+      <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4Client" priority="0x2121" type="Button">
         <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup2" />
         <Icon guid="guidIcoImages4Grpc" id="icoGrpc" />
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -179,39 +180,22 @@
         </Strings>
       </Button>
 
-      <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4ClientDll" priority="0x2121" type="Button">
-        <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup3" />
-        <Icon guid="guidIcoImages4Dll" id="icoDll" />
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <Strings>
-          <ButtonText>Grpc编译</ButtonText>
-        </Strings>
-      </Button>
-      <!--<Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4ClientDll" priority="0x2122" type="Button">
+      <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4ClientDll" priority="0x2122" type="Button">
         <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup2" />
         <Icon guid="guidIcoImages4Dll" id="icoDll" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <ButtonText>Grpc客户端Dll</ButtonText>
-        </Strings>
-      </Button>-->
-
-      <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4ClientNuget" priority="0x2122" type="Button">
-        <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup4" />
-        <Icon guid="guidIcoImages4Nuget" id="icoNuget" />
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <Strings>
-          <ButtonText>Grpc打包</ButtonText>
+          <ButtonText>Grpc客户端编译</ButtonText>
         </Strings>
       </Button>
-      <!--<Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4ClientNuget" priority="0x2132" type="Button">
-        <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup3" />
+      <Button guid="guidVSMenuControlCmdSet4Grpc" id="GrpcGen4ClientNuget" priority="0x2123" type="Button">
+        <Parent guid="guidVSMenuControlCmdSet4Grpc" id="GrpcSubMenuGroup2" />
         <Icon guid="guidIcoImages4Nuget" id="icoNuget" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <ButtonText>Grpc客户端Nuget</ButtonText>
+          <ButtonText>Grpc客户端打包</ButtonText>
         </Strings>
-      </Button>-->
+      </Button>
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -271,11 +255,10 @@
       <IDSymbol name="GrpcSubMenuGroup4" value="0x2140"/>
 
       <IDSymbol name="GrpcGen4Server" value="0x2111" />
-      <IDSymbol name="GrpcGen4Client" value="0x2112" />
-
-      <IDSymbol name="GrpcGen4ClientDll" value="0x2121" />
-
-      <IDSymbol name="GrpcGen4ClientNuget" value="0x2122" />
+      
+      <IDSymbol name="GrpcGen4Client" value="0x2121" />
+      <IDSymbol name="GrpcGen4ClientDll" value="0x2122" />
+      <IDSymbol name="GrpcGen4ClientNuget" value="0x2123" />
     </GuidSymbol>
 
    
