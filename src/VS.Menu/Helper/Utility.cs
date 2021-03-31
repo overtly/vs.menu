@@ -209,7 +209,7 @@ namespace VS.Menu.Helper
         public static void ExportFile(string filePath, byte[] resource)
         {
             #region 导出Thrift.dll
-            if (string.IsNullOrWhiteSpace(filePath) || !System.IO.File.Exists(filePath))
+            if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
             {
                 byte[] buffer = resource;//这个是添加EXE到程序资源时的名称
                 FileStream fileStream = null;
