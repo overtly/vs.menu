@@ -54,11 +54,19 @@ namespace VS.Menu.GrpcGenCore
                     if (proto.EndsWith(".proto"))
                         protos.Add(proto);
                 }
-                
-                if(nextLine.IndexOf("package") > -1)
+
+                if (nextLine.IndexOf("package") > -1)
                     csNamespace = nextLine.Replace("package", "").Replace("\"", "").Replace(";", "").Trim();
             }
             #endregion
+
+            var protocPath = GrpcGlobal.ProtocExePath_1_9_0;
+            var csharpPluginsPath = GrpcGlobal.CsharpPluginsPath_1_9_0;
+            if (IsGte1_0_5())
+            {
+                protocPath = GrpcGlobal.ProtocExePath_2_36_4;
+                csharpPluginsPath = GrpcGlobal.CsharpPluginsPath_2_36_4;
+            }
 
             var fileDic = new FileInfo(filePath).Directory.FullName;
             var cmdArr = new string[]
@@ -71,15 +79,11 @@ namespace VS.Menu.GrpcGenCore
                 "\""+GrpcGlobal.GenFolder+"\"",
                 (protos.Count>0 ? "--descriptor_set_out=\""+filePath+"bin\"":""),
                 (protos.Count>0 ? "--include_imports \"" + string.Join("\" \"", protos) + "\"":""),
-                "--plugin=protoc-gen-grpc="+GrpcGlobal.CsharpPluginsPath
+                "--plugin=protoc-gen-grpc="+csharpPluginsPath
             };
             var cmd = string.Join(" ", cmdArr);
             var output = string.Empty;
 
-            var protocPath = GrpcGlobal.ProtocExePath_1_9_0;
-
-            if (IsGte1_0_5())
-                protocPath = GrpcGlobal.ProtocExePath_New_2_36_4;
 
             Utility.InvokeProcess(protocPath, null, out output, out error, arguments: cmd);
 

@@ -263,9 +263,19 @@ namespace VS.Menu {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
-        internal static byte[] grpc_csharp_plugin {
+        internal static byte[] grpc_csharp_plugin_1_9_0 {
             get {
-                object obj = ResourceManager.GetObject("grpc_csharp_plugin", resourceCulture);
+                object obj = ResourceManager.GetObject("grpc_csharp_plugin_1_9_0", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
+        internal static byte[] grpc_csharp_plugin_2_36_4 {
+            get {
+                object obj = ResourceManager.GetObject("grpc_csharp_plugin_2_36_4", resourceCulture);
                 return ((byte[])(obj));
             }
         }

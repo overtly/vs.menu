@@ -57,7 +57,22 @@ namespace VS.Menu.GrpcGenCore
                 return path;
             }
         }
-        public static string ProtocExePath_New_2_36_4
+
+        /// <summary>
+        /// grpc_csharp_plugin
+        /// </summary>
+        public static string CsharpPluginsPath_1_9_0
+        {
+            get
+            {
+                var path = Path.Combine(Utility.AppBaseResourceDic, "grpc_csharp_plugin_1_9_0.exe");
+                Utility.ExportFile(path, Resources.grpc_csharp_plugin_1_9_0);
+
+                return path;
+            }
+        }
+
+        public static string ProtocExePath_2_36_4
         {
             get
             {
@@ -71,16 +86,17 @@ namespace VS.Menu.GrpcGenCore
         /// <summary>
         /// grpc_csharp_plugin
         /// </summary>
-        public static string CsharpPluginsPath
+        public static string CsharpPluginsPath_2_36_4
         {
             get
             {
-                var path = Path.Combine(Utility.AppBaseResourceDic, "grpc_csharp_plugin.exe");
-                Utility.ExportFile(path, Resources.grpc_csharp_plugin);
+                var path = Path.Combine(Utility.AppBaseResourceDic, "grpc_csharp_plugin_2_36_4.exe");
+                Utility.ExportFile(path, Resources.grpc_csharp_plugin_2_36_4);
 
                 return path;
             }
         }
+
         /// <summary>
         /// project.assets.json
         /// </summary>
