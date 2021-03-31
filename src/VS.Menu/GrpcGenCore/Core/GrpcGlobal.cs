@@ -47,16 +47,27 @@ namespace VS.Menu.GrpcGenCore
         /// <summary>
         /// proto
         /// </summary>
-        public static string ProtoExePath
+        public static string ProtocExePath_1_9_0
         {
             get
             {
-                var path = Path.Combine(Utility.AppBaseResourceDic, "proto.exe");
-                Utility.ExportFile(path, Resources.protoc);
+                var path = Path.Combine(Utility.AppBaseResourceDic, "protoc_1_9_0.exe");
+                Utility.ExportFile(path, Resources.protoc_1_9_0);
 
                 return path;
             }
         }
+        public static string ProtocExePath_New_2_36_4
+        {
+            get
+            {
+                var path = Path.Combine(Utility.AppBaseResourceDic, "protoc_2_36_4.exe");
+                Utility.ExportFile(path, Resources.protoc_2_36_4);
+
+                return path;
+            }
+        }
+
         /// <summary>
         /// grpc_csharp_plugin
         /// </summary>

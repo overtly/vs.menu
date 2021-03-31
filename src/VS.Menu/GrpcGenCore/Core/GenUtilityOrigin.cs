@@ -22,6 +22,9 @@ namespace VS.Menu.GrpcGenCore
         const string netcoreFold = "netstandard2.0";
         const string dllconfigFold = "dllconfigs";
         static string namespaces => DependenceHelper.GetGrpcNamespace();
+        static string depType = $"grpc";
+        static List<DependenceModel> dependencies => DependenceHelper.Get(depType);
+        static DependenceModel overtCoreGrpcPag => dependencies.FirstOrDefault(oo => oo.PackageId.ToLower() == namespaces.ToLower());
 
         /// <summary>
         /// 执行thrift -gen csharp .thrift 命令得到生成的.cs文件
@@ -72,7 +75,13 @@ namespace VS.Menu.GrpcGenCore
             };
             var cmd = string.Join(" ", cmdArr);
             var output = string.Empty;
-            Utility.InvokeProcess(GrpcGlobal.ProtoExePath, null, out output, out error, arguments: cmd);
+
+            var protocPath = GrpcGlobal.ProtocExePath_1_9_0;
+
+            if (IsGte1_0_5())
+                protocPath = GrpcGlobal.ProtocExePath_New_2_36_4;
+
+            Utility.InvokeProcess(protocPath, null, out output, out error, arguments: cmd);
 
             var basePath = GrpcGlobal.GenFolder;
             if (!Directory.Exists(basePath))
@@ -114,19 +123,6 @@ namespace VS.Menu.GrpcGenCore
             var mainClassName = clientClassFullName.Split('+')[0];
             var clientName = clientClass.Name;
 
-            var type = $"grpc";
-            var dependencies = DependenceHelper.Get(type);
-            var overtCoreGrpcPag = dependencies.FirstOrDefault(oo => oo.PackageId.ToLower() == namespaces.ToLower());
-            var over1_0_5 = false;
-            try
-            {
-                over1_0_5 = new Version(overtCoreGrpcPag?.Version?.Split('-')[0]) > new Version("1.0.4.1");
-            }
-            catch (Exception ex)
-            {
-                
-            }
-
             // 依赖的命名空间可能会改
             var grpcBuilder = new StringBuilder();
             grpcBuilder.Append($"using Grpc.Core;");
@@ -167,7 +163,7 @@ namespace VS.Menu.GrpcGenCore
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("} }");
             grpcBuilder.Append(Environment.NewLine);
-            if (over1_0_5)
+            if (IsGte1_0_5())
             {
                 grpcBuilder.Append("public static __GrpcService." + clientName + " CreateInstance(Func<List<ServerCallInvoker>, ServerCallInvoker> getInvoker = null){");
                 grpcBuilder.Append(Environment.NewLine);
@@ -192,7 +188,7 @@ namespace VS.Menu.GrpcGenCore
             grpcBuilder.Append(Environment.NewLine);
             grpcBuilder.Append("{");
             grpcBuilder.Append(Environment.NewLine);
-            if (over1_0_5)
+            if (IsGte1_0_5())
             {
                 grpcBuilder.Append("public static new T Instance => CreateInstance();");
                 grpcBuilder.Append(Environment.NewLine);
@@ -223,7 +219,7 @@ namespace VS.Menu.GrpcGenCore
                 grpcBuilder.Append("} }");
                 grpcBuilder.Append(Environment.NewLine);
             }
-            
+
 
             grpcBuilder.Append("}");
 
@@ -691,8 +687,6 @@ namespace VS.Menu.GrpcGenCore
             grpcBuilder.Append("    <dependencies>");
             grpcBuilder.Append(Environment.NewLine);
 
-            var type = $"grpc";
-            var dependencies = DependenceHelper.Get(type);
             foreach (var dependence in dependencies)
             {
                 grpcBuilder.Append($"      <dependency id=\"{dependence.PackageId}\" version=\"{dependence.Version}\" />");
@@ -840,6 +834,20 @@ namespace VS.Menu.GrpcGenCore
             {
                 fs.Write(bts, 0, bts.Count());
             }
+        }
+
+        public static bool IsGte1_0_5()
+        {
+            var gte1_0_5 = false;
+            try
+            {
+                gte1_0_5 = new Version(overtCoreGrpcPag?.Version?.Split('-')[0]) > new Version("1.0.4.1");
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return gte1_0_5;
         }
 
     }

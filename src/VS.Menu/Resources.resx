@@ -220,10 +220,13 @@
   <data name="grpc_csharp_plugin" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\GrpcTool\grpc_csharp_plugin.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="protoc" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\GrpcTool\protoc.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="project_assets" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\GrpcReference\project.assets.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="protoc_1_9_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\grpctool\old\protoc.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="protoc_2_36_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\grpctool\new\protoc.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

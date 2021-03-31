@@ -226,8 +226,10 @@
     <Resource Include="Resources\nuget.ico" />
     <Resource Include="Resources\dll.ico" />
     <Resource Include="Resources\grpc.ico" />
-    <Content Include="Resources\GrpcTool\grpc_csharp_plugin.exe" />
-    <Content Include="Resources\GrpcTool\protoc.exe" />
+    <Content Include="Resources\GrpcTool\new\grpc_csharp_plugin.exe" />
+    <Content Include="Resources\GrpcTool\new\protoc.exe" />
+    <Content Include="Resources\GrpcTool\old\grpc_csharp_plugin.exe" />
+    <Content Include="Resources\GrpcTool\old\protoc.exe" />
     <Content Include="Resources\logo.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
